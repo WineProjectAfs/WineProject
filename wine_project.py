@@ -1,4 +1,6 @@
-# Import helpful libraries
+# wine_project.py Test File
+#
+# # Import helpful libraries
 import pandas as pd
 import numpy as np
 from sklearn.ensemble import RandomForestRegressor
@@ -39,3 +41,4 @@ rf_val_predictions = rf_model.predict(OH_cols_valid)
 rf_val_mae = mean_absolute_error(rf_val_predictions, Y_valid)
  
 print("Validation MAE for Random Forest Model: {:,.0f}".format(rf_val_mae))
+    
