@@ -1,4 +1,13 @@
-# Import helpful libraries
+# wine_project.py Test File
+#
+# # Import helpful libraries
+# Data Explanation / Exploration 
+
+# Models used and explanation of results 
+
+# Data visualizations and model visualizations 
+
+# Any insights into the data you have gained 
 import pandas as pd
 import numpy as np
 from sklearn.ensemble import RandomForestRegressor
@@ -14,9 +23,12 @@ home_data = pd.read_csv(data_path)
 # Create Y
 y = home_data.points 
  
-# Create X 
-features = ['country', 'variety']
- 
+# MAE 2
+# features = ['country', 'variety']
+#
+features = ['country', 'variety', 'winery']
+
+
 # Select Columns Corresponding to Feature and Preview Data
 X = home_data[features]
  
