@@ -1,0 +1,8 @@
+The original 150k file from Kaggle (winemag-data_first150k.csv) had four records (rows)
+with line breaks which split each record into two rows.  This caused the quoted Description
+text to be handled incorrectly, and we saw partial description text in the Country field instead.
+
+I edited the CSV file and merged those records back to how they should be.  The new file is called
+winemag_data_edited.csv in our project GitHub.
+
+Bob Blum
