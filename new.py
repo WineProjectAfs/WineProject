@@ -48,13 +48,14 @@ countrySeries = countryData.value_counts(ascending=False)
 countriesDict = countrySeries.to_dict()
 # print(countriesDict) # Top 10 Countries: US, Italy, France, Spain, Chile, Argentina, Portugal, Australia, New Zealand, Austria
 # print(countryData.head)
-countriesDict = countriesDict.items()
-for key, value in countriesDict():
+for key, value in countriesDict.items():
     if(value < 3057):
         countriesDict[key] = None
-print(countriesDict)
 
+countrySeries = pd.Series(countriesDict.keys())
+wineData.country.replace(countrySeries)
 
+print(wineData.to_string())
 
 
 # ***************************************************************************************************************************
