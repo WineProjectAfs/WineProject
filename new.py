@@ -20,6 +20,8 @@ from sklearn.tree import DecisionTreeRegressor
 dataPath = 'winemag_data.csv'
 wineData = pd.read_csv(dataPath)
 
+
+
 # Create Y
 y = wineData.points 
  
@@ -28,6 +30,7 @@ features = ['country', 'variety']
  
 # Select Columns Corresponding to Feature and Preview Data
 X = wineData[features]
+
 
 
 # ***************************************************************************************************************************
@@ -42,7 +45,7 @@ X = wineData[features]
 # 7. The One-Hot Encoding should work properly, the perspective should be from a larger aggregate, and the MAE should be normal...not close to 2....which it should NOT be
 
 
-countryData = wineData['country'] # this is a series ?
+countryData = wineData['country']
 countryFrame = countryData.to_frame()
 uniqueCountries = countryData.unique()
 # print(uniqueCountries) # 49 unique countries
@@ -57,13 +60,23 @@ rankedList = ['US','Italy','France','Spain','Chile','Argentina','Portugal','Aust
 
 exclusionList = rankedList[10:]
 
-countryFrame['country'] = countryFrame['country'].replace(exclusionList, 'Other')
-countryFrame['country'] = countryFrame['country'].fillna('Other')
-print(countryFrame['country'].unique())
-print(len(countryFrame['country'].unique()))
-countryFrame.to_csv('C:/Users/charles.brant-stec/wine_project/csv/filteredCountries.csv')
-wineData.country.replace(countryFrame['country'])
-wineData.to_csv('C:/Users/charles.brant-stec/wine_project/csv/filteredCountries_1.csv')
+# countryFrame['country'] = countryFrame['country'].replace(exclusionList, 'Other')
+# countryFrame['country'] = countryFrame['country'].fillna('Other')
+
+wineData['country'] = wineData['country'].replace(exclusionList, 'Other')
+wineData['country'] = wineData['country'].fillna('Other')
+
+wineData.to_csv('C:/Users/charles.brant-stec/wine_project/csv/wineData.csv')
+
+
+# print(countryFrame['country'].unique())
+# print(len(countryFrame['country'].unique()))
+
+# countryFrame.to_csv('C:/Users/charles.brant-stec/wine_project/csv/filteredCountries.csv')
+
+# wineData['country'].replace(countryFrame['country'])
+# wineData.to_csv('C:/Users/charles.brant-stec/wine_project/csv/countriesFiltered.csv')
+# wineData.to_csv('C:/Users/charles.brant-stec/wine_project/csv/filteredCountries_1.csv')
 
 
 
