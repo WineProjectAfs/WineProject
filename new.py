@@ -48,60 +48,24 @@ uniqueCountries = countryData.unique()
 # print(uniqueCountries) # 49 unique countries
 
 countrySeries = countryData.value_counts(ascending=False) 
-# countryList = countrySeries.tolist()
-# clistDf = countryList.to_frame()
-# newList = clistDf['country'].to_list()
-countriesDict = countrySeries.to_dict()
-# print(countriesDict) # Top 10 Countries: US, Italy, France, Spain, Chile, Argentina, Portugal, Australia, New Zealand, Austria
 
-for key, value in countriesDict.items():
-    if(value < 3057):
-        countriesDict[key] = "Other"
-
-countrySeries = pd.Series(countriesDict.keys())
-# wineData.country.replace(countrySeries)
-
-# print(wineData.to_string())
-
-# wineData.to_csv('C:/Users/charles.brant-stec/wine_project/csv/updatedCountries_1.csv')'
-# countryData.to_csv('C:/Users/charles.brant-stec/wine_project/csv/country_test.csv')
-
-# print(countriesDict) 
-# print(countrySeries)
-
-# print(cDf.columns.values.tolist())
-# print((cDf.country == 'Greece').sum())
-# for i, j in cDf.iterrows():
-#     print(i,j)
-#     print()
-
-# for i,j in cDf.iterrows():
-#     if(((cDf.country == j).sum()) < 3057):
-# cList = uniqueCountries[11:-1]
-# print(cList)
-# print(uniqueCountries)
-# cDf['country'] = cDf['country'].replace(cList,'Other')
-# print(cDf.squeeze().unique())
-# print(countrySeries)
-# print(countryList)
-# print(countrySeries)
-# print((countrySeries.to_frame())['country'])
-# print(uniqueCountries)
-# print(len(uniqueCountries))
-rankedList = ['US','Italy','France','Spain','Chile','Argentina','Portugal','Australia','New Zealand','Austria','Germany'
-              'South Africa','Greece','Israel','Hungary','Canda','Romania','Slovenia','Uruguay','Croatia','Bulgaria'
+rankedList = ['US','Italy','France','Spain','Chile','Argentina','Portugal','Australia','New Zealand','Austria','Germany',
+              'South Africa','Greece','Israel','Hungary','Canada','Romania','Slovenia','Uruguay','Croatia','Bulgaria',
               'Moldova','Mexico','Turkey','Georgia','Lebanon','Cyprus','Brazil','Macedonia','Serbia','Morocco','England',
               'Luxembourg','Lithuania','India','Czech Republic','Ukraine','Switzerland','South Korea','Bosnia and Herzegovina',
               'China','Egypt','Slovakia','Tunisia','Albania','Montenegro','Japan','US-France']
-# exclusionList = rankedList[11:-1]
-exclusionList = ['Germany''South Africa','Greece','Israel','Hungary','Canda','Romania','Slovenia','Uruguay','Croatia','Bulgaria'
-              'Moldova','Mexico','Turkey','Georgia','Lebanon','Cyprus','Brazil','Macedonia','Serbia','Morocco','England',
-              'Luxembourg','Lithuania','India','Czech Republic','Ukraine','Switzerland','South Korea','Bosnia and Herzegovina',
-              'China','Egypt','Slovakia','Tunisia','Albania','Montenegro','Japan','US-France']
-print(exclusionList)   
-# countryFrame['country'] = countryFrame['country'].replace(exclusionList, 'Other')
-# countryFrame['country'] = countryFrame['country'].replace(['Greece'], 'Other')
+
+exclusionList = rankedList[10:]
+
+countryFrame['country'] = countryFrame['country'].replace(exclusionList, 'Other')
+countryFrame['country'] = countryFrame['country'].fillna('Other')
 print(countryFrame['country'].unique())
+print(len(countryFrame['country'].unique()))
+countryFrame.to_csv('C:/Users/charles.brant-stec/wine_project/csv/filteredCountries.csv')
+wineData.country.replace(countryFrame['country'])
+wineData.to_csv('C:/Users/charles.brant-stec/wine_project/csv/filteredCountries_1.csv')
+
+
 
 
 
