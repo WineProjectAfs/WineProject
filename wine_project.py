@@ -28,11 +28,39 @@ features = ['country', 'variety']
 # Select Columns Corresponding to Feature and Preview Data
 X = wineData[features]
 
-# THIS IS CURRENTLY BROKEN...LOOKING TO FIND UNIQUE ENTRIES
-# countryData = wineData['Country']
-# uniqueCountries = countryData.unique()
+countryData = wineData['country']
 
-# print(uniqueCountries)
+print(type(countryData))
+# print(countryData)
+
+countrySeries = countryData.value_counts(ascending=False)
+
+# print(countrySeries)
+
+countryDict = countrySeries.to_dict()
+
+for key, value in countryDict.items():
+    if(value < 3057):
+        countryDict[key] = "Other"
+
+# print(countryDict)
+
+countrySeries = pd.Series(countryDict.keys())
+
+print(countrySeries)
+
+
+# wineData['country'].replace(countrySeries, inplace=True)
+
+# # print(wineData.to_string())
+
+# wineData.to_csv('output.csv')
+
+
+
+
+
+
 
 
 # ***************************************************************************************************************************
