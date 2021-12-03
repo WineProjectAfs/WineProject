@@ -24,10 +24,8 @@ home_data = pd.read_csv(data_path)
 y = home_data.points 
  
 # MAE 2
-# features = ['country', 'variety']
+features = ['country', 'variety']
 #
-features = ['country', 'variety', 'winery']
-
 
 # Select Columns Corresponding to Feature and Preview Data
 X = home_data[features]
