@@ -18,8 +18,7 @@ from sklearn.tree import DecisionTreeRegressor
 # ***************************************************************************************************************************
 # Load the data, and separate the target
 dataPath = 'winemag_data.csv'
-dataPath = 'winemag_data.csv'
-
+# dataPath = 'wineData.csv' # csv with reduced countries cardinality
 wineData = pd.read_csv(dataPath)
 
 # Create Y
@@ -59,8 +58,8 @@ rankedList = ['US','Italy','France','Spain','Chile','Argentina','Portugal','Aust
 
 exclusionList = rankedList[10:]
 
-wineData['country'] = wineData['country'].replace(exclusionList, 'Other')
-wineData['country'] = wineData['country'].fillna('Other')
+# wineData['country'] = wineData['country'].replace(exclusionList, 'Other')
+# wineData['country'] = wineData['country'].fillna('Other')
 
 # wineData.to_csv('C:/Users/charles.brant-stec/wine_project/csv/wineData.csv')
 
@@ -106,7 +105,9 @@ rf_model.fit(OH_cols_train, Y_train)
 rf_val_predictions = rf_model.predict(OH_cols_valid)
 rf_val_mae = mean_absolute_error(rf_val_predictions, Y_valid)
  
-print("Validation MAE for Random Forest Model: {:,.0f}".format(rf_val_mae))
+# print("Validation MAE for Random Forest Model: {:,.0f}".format(rf_val_mae)) # MAE 2
+print(rf_val_mae) # 
+# print(rf_val_mae) # 2.37 with reduced country cardinality
 
 
 # ***************************************************************************************************************************
