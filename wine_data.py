@@ -1,6 +1,7 @@
 # ***************************************************************************************************************************
 #                                                         Imports                                                           #
 # ***************************************************************************************************************************
+from numpy.core.fromnumeric import var
 import pandas as pd
 import numpy as np
 from pandas.core.algorithms import rank
@@ -17,8 +18,9 @@ from sklearn.tree import DecisionTreeRegressor
 #                                                        Data Set-Up                                                        #
 # ***************************************************************************************************************************
 # Load the data, and separate the target
-dataPath = 'winemag_data.csv'
-# dataPath = 'wineData.csv' # csv with reduced countries cardinality
+
+# dataPath = 'winemag_data.csv' # original un-altered csv
+dataPath = 'wineData.csv' # csv with reduced countries cardinality
 wineData = pd.read_csv(dataPath)
 
 # Create Y
@@ -29,7 +31,6 @@ features = ['country', 'variety']
  
 # Select Columns Corresponding to Feature and Preview Data
 X = wineData[features]
-
 
 
 # ***************************************************************************************************************************
@@ -62,6 +63,28 @@ exclusionList = rankedList[10:]
 # wineData['country'] = wineData['country'].fillna('Other')
 
 # wineData.to_csv('C:/Users/charles.brant-stec/wine_project/csv/wineData.csv')
+
+varietyData = wineData['variety']
+uniqueVarieites = varietyData.unique()
+
+varietySeries = varietyData.value_counts(ascending=False)
+# print(varietySeries)
+# varietyDf = varietySeries.to_frame()
+# rankedVarietyList = varietyDf.index.to_list()
+# print(rankedVarietyList)
+# varietyData.to_csv('C:/Users/charles.brant-stec/wine_project/csv/varietyData.csv')
+rankedVarieties = varietySeries.index.tolist
+print(rankedVarieties)
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -98,24 +121,34 @@ OH_cols_valid.index = X_valid.index
 
 # print(best_tree_size) # 500 best tree size / MAE 2.37
 
-# Random Forest Model
 
+# ***************************************************************************************************************************
+#                                                 Random Forest Model                                                       #
+# ***************************************************************************************************************************
 rf_model = RandomForestRegressor(random_state=0) 
 rf_model.fit(OH_cols_train, Y_train)
 rf_val_predictions = rf_model.predict(OH_cols_valid)
 rf_val_mae = mean_absolute_error(rf_val_predictions, Y_valid)
  
-# print("Validation MAE for Random Forest Model: {:,.0f}".format(rf_val_mae)) # MAE 2
-print(rf_val_mae) # 
-# print(rf_val_mae) # 2.37 with reduced country cardinality
+# print(rf_val_mae) # MAE 2.364 with original country cardinality
+# print(rf_val_mae) # MAE 2.370 with reduced country cardinality
 
 
 # ***************************************************************************************************************************
 #                                        Working on XGB Regressor Model w/ MAE Averages                                     #
 # ***************************************************************************************************************************
-# xgb_model = XGBRegressor()
-# xgb_model.fit(OH_cols_train, OH_cols_valid, learning_rate=0.05, n_jobs=4, 
+# xgb_model = XGBRegressor(n_estimators=500,learning_rate=0.05,n_jobs=4)
+# xgb_model.fit(OH_cols_train, Y_train, 
 #               early_stopping_rounds=5,
-#               eval_set=[(X_valid, Y_valid)],
+#               eval_set=[(OH_cols_valid, Y_valid)],
 #               verbose=False)
+# predictions = xgb_model.predict(OH_cols_valid)
+# xgb_mae = mean_absolute_error(predictions, y_valid)
+
+
+
+
+
+
+
 
