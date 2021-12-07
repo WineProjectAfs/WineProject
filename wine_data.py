@@ -18,9 +18,6 @@ from sklearn.tree import DecisionTreeRegressor
 #                                                        Data Set-Up                                                        #
 # ***************************************************************************************************************************
 # Load the data, and separate the target
-
-# dataPath = 'winemag_data.csv' # original un-altered dataset with 49 country count
-# dataPath = 'wineData.csv' # csv with reduced countries cardinality to 10 and duplicate index column
 dataPath = 'csv/winemag_data.csv'
 wineData = pd.read_csv(dataPath)
 
@@ -66,9 +63,7 @@ wineData['country'] = wineData['country'].fillna('Other')
 # Replacing the country column with the new country data adds an extra index column "Unnamed: 0", let's drop it
 wineData = wineData.drop('Unnamed: 0', axis='columns')
 
-# wineData.to_csv('C:/Useres/charles.brant-stec/wine_project/csv/wineData.csv') # This dataset contains duplicate index columns
-# wineData.to_csv('C:/Users/charles.brant-stec/wine_project/csv/wineData10countries.csv') # dataset with droppped double index
-
+# reducing variety cardinality as we did with countries
 varietyData = wineData['variety']
 uniqueVarieites = varietyData.unique()
 
@@ -77,6 +72,6 @@ varietyList = varietySeries.index.tolist()
 varietyExclusionList = varietyList[10:]
 wineData['variety'] = wineData['variety'].replace(varietyExclusionList, 'Other')
 
-wineData.to_csv('C:/Users/charles.brant-stec/wine_project/csv/wineDataAltered.csv')
+wineData.to_csv('csv/wineData.csv')
 
 
