@@ -49,27 +49,47 @@ countryData = wineData['country']
 # 6. Set all other rows to "other"
 # 7. The One-Hot Encoding should work properly, the perspective should be from a larger aggregate, and the MAE should be normal...not close to 2....which it should NOT be
 
-countryData = wineData['country'] # this is a series ?
-countryFrame = countryData.to_frame()
-uniqueCountries = countryData.unique()
-# print(uniqueCountries) # 49 unique countries
+################ Setting Cardinality < 10 ##########################
+# countryData = wineData['country'] # this is a series ?
+# countryFrame = countryData.to_frame()
+# uniqueCountries = countryData.unique()
+# # print(uniqueCountries) # 49 unique countries
 
-countrySeries = countryData.value_counts(ascending=False) 
+# countrySeries = countryData.value_counts(ascending=False) 
 
-rankedList = ['US','Italy','France','Spain','Chile','Argentina','Portugal','Australia','New Zealand','Austria','Germany',
-              'South Africa','Greece','Israel','Hungary','Canada','Romania','Slovenia','Uruguay','Croatia','Bulgaria',
-              'Moldova','Mexico','Turkey','Georgia','Lebanon','Cyprus','Brazil','Macedonia','Serbia','Morocco','England',
-              'Luxembourg','Lithuania','India','Czech Republic','Ukraine','Switzerland','South Korea','Bosnia and Herzegovina',
-              'China','Egypt','Slovakia','Tunisia','Albania','Montenegro','Japan','US-France']
+# rankedList = ['US','Italy','France','Spain','Chile','Argentina','Portugal','Australia','New Zealand','Austria','Germany',
+#               'South Africa','Greece','Israel','Hungary','Canada','Romania','Slovenia','Uruguay','Croatia','Bulgaria',
+#               'Moldova','Mexico','Turkey','Georgia','Lebanon','Cyprus','Brazil','Macedonia','Serbia','Morocco','England',
+#               'Luxembourg','Lithuania','India','Czech Republic','Ukraine','Switzerland','South Korea','Bosnia and Herzegovina',
+#               'China','Egypt','Slovakia','Tunisia','Albania','Montenegro','Japan','US-France']
 
-exclusionList = rankedList[10:]
+# exclusionList = rankedList[10:]
 
-wineData['country'] = wineData['country'].replace(exclusionList, 'Other')
-wineData['country'] = wineData['country'].fillna('Other')
+# wineData['country'] = wineData['country'].replace(exclusionList, 'Other')
+# wineData['country'] = wineData['country'].fillna('Other')
 # print(countryFrame['country'].unique())
 # print(len(countryFrame['country'].unique()))
 # wineData.country.replace(countryFrame['country'])
-wineData.to_csv('C://Users/daniel.bueno/Desktop/official_project/filteredCountries.csv')
+
+
+varietyData = wineData['variety']
+varietySeries = varietyData.value_counts(ascending=False)
+varietyFrame = varietyData.to_frame()
+uniqueVarieties = varietyData.unique()
+# print(uniqueVarieties)
+
+
+varietyList = varietySeries.index.tolist()
+varietyExclusionList = varietyList[10:]
+wineData['variety'] = wineData['variety'].replace(varietyExclusionList, 'Other')
+print(varietyFrame['variety'].unique())
+varietyData.variety.replace(varietyFrame['variety'])
+
+
+
+
+
+wineData.to_csv('C:/Users/daniel.bueno/OneDrive - Accenture Federal Services/Desktop/official_project/filteredCountries.csv')
 
 # ***************************************************************************************************************************
 #                                       Regression Forest Model w/ Leaf Node MAE Averages                                   #
