@@ -5,7 +5,7 @@ from numpy.core.fromnumeric import var
 import pandas as pd
 import numpy as np
 from pandas.core.algorithms import rank
-# from xgboost import XGBRegressor
+from xgboost import XGBRegressor
 from sklearn.ensemble import RandomForestRegressor
 from sklearn.metrics import mean_absolute_error
 from sklearn.model_selection import train_test_split
@@ -19,8 +19,9 @@ from sklearn.tree import DecisionTreeRegressor
 # ***************************************************************************************************************************
 # Load the data, and separate the target
 
-# dataPath = 'winemag_data.csv' # original un-altered csv
-dataPath = 'wineData.csv' # csv with reduced countries cardinality
+# dataPath = 'winemag_data.csv' # original un-altered dataset with 49 country count
+# dataPath = 'wineData.csv' # csv with reduced countries cardinality to 10 and duplicate index column
+dataPath = 'wineData10countries.csv'
 wineData = pd.read_csv(dataPath)
 
 # Create Y
@@ -62,28 +63,22 @@ exclusionList = rankedList[10:]
 # wineData['country'] = wineData['country'].replace(exclusionList, 'Other')
 # wineData['country'] = wineData['country'].fillna('Other')
 
-# wineData.to_csv('C:/Users/charles.brant-stec/wine_project/csv/wineData.csv')
+# # Replacing the country column with the new country data adds an extra index column "Unnamed: 0", let's drop it
+# wineData = wineData.drop('Unnamed: 0', axis='columns')
+
+# wineData.to_csv('C:/Useres/charles.brant-stec/wine_project/csv/wineData.csv') # This dataset contains duplicate index columns
+# wineData.to_csv('C:/Users/charles.brant-stec/wine_project/csv/wineData10countries.csv') # dataset with droppped double index
 
 varietyData = wineData['variety']
 uniqueVarieites = varietyData.unique()
 
 varietySeries = varietyData.value_counts(ascending=False)
-# print(varietySeries)
-# varietyDf = varietySeries.to_frame()
-# rankedVarietyList = varietyDf.index.to_list()
-# print(rankedVarietyList)
-# varietyData.to_csv('C:/Users/charles.brant-stec/wine_project/csv/varietyData.csv')
-rankedVarieties = varietySeries.index.tolist
-print(rankedVarieties)
+varietyList = varietySeries.index.tolist()
+varietyExclusionList = varietyList[10:]
+wineData['variety'] = wineData['variety'].replace(varietyExclusionList, 'Other')
+wineData = wineData.drop('Unnamed: 0', axis='columns')
 
-
-
-
-
-
-
-
-
+wineData.to_csv('C:/Users/charles.brant-stec/wine_project/csv/wineDataNew.csv')
 
 
 
@@ -137,13 +132,18 @@ rf_val_mae = mean_absolute_error(rf_val_predictions, Y_valid)
 # ***************************************************************************************************************************
 #                                        Working on XGB Regressor Model w/ MAE Averages                                     #
 # ***************************************************************************************************************************
-# xgb_model = XGBRegressor(n_estimators=500,learning_rate=0.05,n_jobs=4)
-# xgb_model.fit(OH_cols_train, Y_train, 
-#               early_stopping_rounds=5,
-#               eval_set=[(OH_cols_valid, Y_valid)],
-#               verbose=False)
-# predictions = xgb_model.predict(OH_cols_valid)
-# xgb_mae = mean_absolute_error(predictions, y_valid)
+
+xgb_model = XGBRegressor()
+xgb_model = XGBRegressor(n_estimators=500,learning_rate=0.05,n_jobs=4)
+xgb_model.fit(OH_cols_train, Y_train, 
+              early_stopping_rounds=5,
+              eval_set=[(OH_cols_valid, Y_valid)],
+              verbose=False)
+predictions = xgb_model.predict(OH_cols_valid)
+# xgb_mae = mean_absolute_error(predictions, Y_valid)
+# print(xgb_mae) # MAE 2.39 
+
+
 
 
 
