@@ -21,7 +21,7 @@ from sklearn.tree import DecisionTreeRegressor
 
 # dataPath = 'winemag_data.csv' # original un-altered dataset with 49 country count
 # dataPath = 'wineData.csv' # csv with reduced countries cardinality to 10 and duplicate index column
-dataPath = 'wineData10countries.csv'
+dataPath = 'csv/winemag_data.csv'
 wineData = pd.read_csv(dataPath)
 
 # Create Y
@@ -60,11 +60,11 @@ rankedList = ['US','Italy','France','Spain','Chile','Argentina','Portugal','Aust
 
 exclusionList = rankedList[10:]
 
-# wineData['country'] = wineData['country'].replace(exclusionList, 'Other')
-# wineData['country'] = wineData['country'].fillna('Other')
+wineData['country'] = wineData['country'].replace(exclusionList, 'Other')
+wineData['country'] = wineData['country'].fillna('Other')
 
-# # Replacing the country column with the new country data adds an extra index column "Unnamed: 0", let's drop it
-# wineData = wineData.drop('Unnamed: 0', axis='columns')
+# Replacing the country column with the new country data adds an extra index column "Unnamed: 0", let's drop it
+wineData = wineData.drop('Unnamed: 0', axis='columns')
 
 # wineData.to_csv('C:/Useres/charles.brant-stec/wine_project/csv/wineData.csv') # This dataset contains duplicate index columns
 # wineData.to_csv('C:/Users/charles.brant-stec/wine_project/csv/wineData10countries.csv') # dataset with droppped double index
@@ -76,79 +76,7 @@ varietySeries = varietyData.value_counts(ascending=False)
 varietyList = varietySeries.index.tolist()
 varietyExclusionList = varietyList[10:]
 wineData['variety'] = wineData['variety'].replace(varietyExclusionList, 'Other')
-wineData = wineData.drop('Unnamed: 0', axis='columns')
 
-wineData.to_csv('C:/Users/charles.brant-stec/wine_project/csv/wineDataNew.csv')
-
-
-
-
-# ***************************************************************************************************************************
-#                                       Regression Forest Model w/ Leaf Node MAE Averages                                   #
-# ***************************************************************************************************************************
-# Split Into Validation and Training Data
-X_train, X_valid, Y_train, Y_valid = train_test_split(X, y, random_state=1)
- 
-# Apply One-Hot Encoder
-OH_encoder = OneHotEncoder(handle_unknown='ignore', sparse=False)
-OH_cols_train = pd.DataFrame(OH_encoder.fit_transform(X_train[features]))
-OH_cols_valid = pd.DataFrame(OH_encoder.transform(X_valid[features]))
- 
-# One-hot encoding Removed Index...Put It Back
-OH_cols_train.index = X_train.index
-OH_cols_valid.index = X_valid.index
- 
-# # Create Test Leaf Nodes
-# candidate_max_leaf_nodes = [5, 10, 50, 100, 250, 500]
-
-# # Functions
-# def get_mae(max_leaf_nodes, OH_cols_train, OH_cols_valid, Y_train, Y_valid):
-#     model = DecisionTreeRegressor(max_leaf_nodes=max_leaf_nodes, random_state=0)
-#     model.fit(OH_cols_train, Y_train)
-#     preds_val = model.predict(OH_cols_valid)
-#     mae = mean_absolute_error(Y_valid, preds_val)
-#     print(mae)
-#     return(mae)
-
-# scores = {leaf_size: get_mae(leaf_size, OH_cols_train, OH_cols_valid, Y_train, Y_valid) for leaf_size in candidate_max_leaf_nodes}
-
-# best_tree_size = min(scores, key=scores.get)
-
-# print(best_tree_size) # 500 best tree size / MAE 2.37
-
-
-# ***************************************************************************************************************************
-#                                                 Random Forest Model                                                       #
-# ***************************************************************************************************************************
-rf_model = RandomForestRegressor(random_state=0) 
-rf_model.fit(OH_cols_train, Y_train)
-rf_val_predictions = rf_model.predict(OH_cols_valid)
-rf_val_mae = mean_absolute_error(rf_val_predictions, Y_valid)
- 
-# print(rf_val_mae) # MAE 2.364 with original country cardinality
-# print(rf_val_mae) # MAE 2.370 with reduced country cardinality
-
-
-# ***************************************************************************************************************************
-#                                        Working on XGB Regressor Model w/ MAE Averages                                     #
-# ***************************************************************************************************************************
-
-xgb_model = XGBRegressor()
-xgb_model = XGBRegressor(n_estimators=500,learning_rate=0.05,n_jobs=4)
-xgb_model.fit(OH_cols_train, Y_train, 
-              early_stopping_rounds=5,
-              eval_set=[(OH_cols_valid, Y_valid)],
-              verbose=False)
-predictions = xgb_model.predict(OH_cols_valid)
-# xgb_mae = mean_absolute_error(predictions, Y_valid)
-# print(xgb_mae) # MAE 2.39 
-
-
-
-
-
-
-
-
+wineData.to_csv('C:/Users/charles.brant-stec/wine_project/csv/wineDataAltered.csv')
 
 
