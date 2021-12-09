@@ -84,7 +84,7 @@ countries = ['US','Spain','France','Italy','New Zealand','Argentina','Australia'
 points = ['80','81','82','83','84','85','86','87','88','89','90','91','92','93','94','95','96','97','98','99','100'] # index
 points1 = [80,81,82,83,84,85,86,87,88,89,90,91,92,93,94,95,96,97,98,99,100]
 
-# This loop as 0 country/point value counts to the dataframe
+# This loop adds 0 country/point value counts to the dataframe
 for point in points1:
     pts = hdf.loc[[point]].reset_index()
     pts_list = pts['country'].to_list()
@@ -93,14 +93,17 @@ for point in points1:
             hdfd.loc[len(hdfd.index)] = [point,country,0]
 
 hdfd = hdfd.set_index('points',drop=True)
-hdfd = hdfd.sort_index()
+hdfd = hdfd.sort_index(ascending=False)
 print(hdfd.to_string())
 
+# This loop populates are new dataframe with value counts per country for 80-100
 for country in heat_df.columns:
     country_pts = (hdfd.loc[hdfd['country'] == country]).iloc[:,1].to_list()
     heat_df[country] = country_pts
 
 print(heat_df.to_string)
+# heat_df.to_csv('csv/heatmap_data.csv')
+
     
 
 
