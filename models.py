@@ -78,3 +78,6 @@ xgb_mae = mean_absolute_error(predictions, Y_valid)
 
 # print(xgb_mae) # MAE 2.39 with reduced country cardinality only
 print(xgb_mae) # MAE 2.466 with recuced country & variety cardinality, runtime greatly reduced
+
+
+# TODO: Evaluate whether reducing the cardinality of country and variety effected predictions
