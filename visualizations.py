@@ -101,9 +101,22 @@ for country in heat_df.columns:
     country_pts = (hdfd.loc[hdfd['country'] == country]).iloc[:,1].to_list()
     heat_df[country] = country_pts
 
-print(heat_df.to_string)
+# print(heat_df.to_string)
 # heat_df.to_csv('csv/heatmap_data.csv')
 
+heatmap_filepath = 'csv/heatmap_data.csv'
+heatmap_data = pd.read_csv(heatmap_filepath, index_col='points')
+
+plt.figure(figsize=(14,7))
+
+plt.title('Wine Score Frequency by Country')
+
+# light heatmap
+# sns.heatmap(data=heatmap_data, annot=True,cmap='YlGnBu')
+# dark heatmap
+sns.heatmap(data=heatmap_data, annot=True)
+plt.xlabel('Countries')
+plt.show()
     
 
 

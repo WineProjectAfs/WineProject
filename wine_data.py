@@ -53,7 +53,8 @@ rankedList = ['US','Italy','France','Spain','Chile','Argentina','Portugal','Aust
               'South Africa','Greece','Israel','Hungary','Canada','Romania','Slovenia','Uruguay','Croatia','Bulgaria',
               'Moldova','Mexico','Turkey','Georgia','Lebanon','Cyprus','Brazil','Macedonia','Serbia','Morocco','England',
               'Luxembourg','Lithuania','India','Czech Republic','Ukraine','Switzerland','South Korea','Bosnia and Herzegovina',
-              'China','Egypt','Slovakia','Tunisia','Albania','Montenegro','Japan','US-France']
+              'China','Egypt'
+              ,'Slovakia','Tunisia','Albania','Montenegro','Japan','US-France']
 
 exclusionList = rankedList[10:]
 
