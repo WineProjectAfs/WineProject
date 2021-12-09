@@ -68,13 +68,55 @@ wine_data = pd.read_csv(data_path, index_col='country')
 
 heat_data = pd.read_csv(data_path)
 points = ['80','81','82','83','84','85','86','87','88','89','90','91','92','93','94','95','96','97','98','99','100'] # index
-countries = ['US','Spain','France','Italy','New Zealand','Argentina','Australia','Portugal','Chile','Austria','Other Countries'] 
+points.reverse()
+countries = ['US','Spain','France','Italy','New Zealand','Argentina','Australia','Portugal','Chile','Austria','Other'] 
 hdf = heat_data.groupby(['points','country']).size().to_frame()
 
-hdf.to_csv('csv/hdf.csv')
+# hdf.to_csv('csv/hdf.csv')
 d_pth='csv/hdf.csv'
 hdfd=pd.read_csv(d_pth)
-print(hdfd.loc[hdfd['country'] == 'US'])
-US_pts = (hdfd.loc[hdfd['country'] == 'US']).iloc[:,2].to_list()
 
-print(US_pts)
+heat_df = pd.DataFrame(columns=countries)
+heat_df['points'] = points
+heat_df = heat_df.set_index('points',drop=True)
+
+countries = ['US','Spain','France','Italy','New Zealand','Argentina','Australia','Portugal','Chile','Austria','Other'] 
+points = ['80','81','82','83','84','85','86','87','88','89','90','91','92','93','94','95','96','97','98','99','100'] # index
+points1 = [80,81,82,83,84,85,86,87,88,89,90,91,92,93,94,95,96,97,98,99,100]
+
+# This loop as 0 country/point value counts to the dataframe
+for point in points1:
+    pts = hdf.loc[[point]].reset_index()
+    pts_list = pts['country'].to_list()
+    for country in countries:
+        if pts_list.count(country) == 0:
+            hdfd.loc[len(hdfd.index)] = [point,country,0]
+
+hdfd = hdfd.set_index('points',drop=True)
+hdfd = hdfd.sort_index()
+print(hdfd.to_string())
+
+for country in heat_df.columns:
+    country_pts = (hdfd.loc[hdfd['country'] == country]).iloc[:,1].to_list()
+    heat_df[country] = country_pts
+
+print(heat_df.to_string)
+    
+
+
+
+
+
+    
+            
+
+
+
+
+
+
+
+
+
+
+
