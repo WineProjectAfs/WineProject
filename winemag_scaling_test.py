@@ -29,7 +29,7 @@ np.random.seed(0)
 
 # Load the data, and separate the target
 # data_path = 'winemag_data.csv' # Original data file
-data_path = 'winemag_data_first150k_edited.csv'
+data_path = 'winemag_data_first150k_edited.csv' # Edited to fix three split data rows.
 home_data = pd.read_csv(data_path)
 home_data_points = home_data.points
 
