@@ -5,6 +5,7 @@ from pandas.core.algorithms import rank
 from xgboost import XGBRegressor
 from sklearn.ensemble import RandomForestRegressor
 from sklearn.metrics import mean_absolute_error
+from sklearn.metrics import classification_report
 from sklearn.model_selection import train_test_split
 from sklearn.preprocessing import OneHotEncoder
 from sklearn.impute import SimpleImputer
@@ -33,14 +34,38 @@ OH_cols_valid.index = X_valid.index
 # ***************************************************************************************************************************
 #                                                 Random Forest Model                                                       #
 # ***************************************************************************************************************************
-rf_model = RandomForestRegressor(random_state=0) 
-rf_model.fit(OH_cols_train, Y_train)
-rf_val_predictions = rf_model.predict(OH_cols_valid)
-rf_val_mae = mean_absolute_error(rf_val_predictions, Y_valid)
+
+# Uncomment All Between Lines  to Print .csv With Predictions For Random Forest Model #
+# Beginning ###############################################################################################################
+# rf_model = RandomForestRegressor(random_state=0) 
+# rf_model.fit(OH_cols_train, Y_train)
+# rf_val_predictions = rf_model.predict(OH_cols_valid)
+# rf_val_mae = mean_absolute_error(rf_val_predictions, Y_valid)
+
+# Y_valid['predictions'] = rf_val_predictions
+
+# # Type Check
+# print(type(wineData))
+# print(type(Y_valid['predictions']))
+
+# # Uncomment Below to Set DataFrame to Predictions -> Concatenate to Original Data -> Generate .csv File
+# Y_preds = pd.DataFrame(Y_valid['predictions'])
+# randomForestPredictions = pd.merge(wineData, Y_preds, how = 'left', left_index = True, right_index = True)
+# randomForestPredictions.to_csv('csv/randomForestPredictions.csv')
+# End ######################################################################################################################
+
+# print(xgb_mae) # MAE 2.39 with reduced country cardinality only
+# print(xgb_mae) # MAE 2.466 with recuced country & variety cardinality, runtime greatly reduced
+
+# print(predictions)
+
+
  
 # print(rf_val_mae) # MAE 2.364 with original country cardinality
 # print(rf_val_mae) # MAE 2.370 with reduced country cardinality
 # print(rf_val_mae) # MAE 2.465 with reduced country and variety cardinality
+# print(rf_val_predictions)
+# ***************************************************************************************************************************
 
 
 # ***************************************************************************************************************************
@@ -62,19 +87,41 @@ rf_val_mae = mean_absolute_error(rf_val_predictions, Y_valid)
 
 # best_tree_size = min(scores, key=scores.get)
 # print(best_tree_size) # 500 best tree size / MAE 2.37
+# ***************************************************************************************************************************
 
 
 # ***************************************************************************************************************************
 #                                        XGB Regressor Model w/ MAE Averages                                                #
 # ***************************************************************************************************************************
-xgb_model = XGBRegressor()
-xgb_model = XGBRegressor(n_estimators=500,learning_rate=0.05,n_jobs=4)
-xgb_model.fit(OH_cols_train, Y_train, 
-              early_stopping_rounds=5,
-              eval_set=[(OH_cols_valid, Y_valid)],
-              verbose=False)
-predictions = xgb_model.predict(OH_cols_valid)
-xgb_mae = mean_absolute_error(predictions, Y_valid)
+
+# Uncomment All Between Lines  to Print .csv With Predictions For XGB Regressor Model #
+# Beginning ###############################################################################################################
+# xgb_model = XGBRegressor()
+# xgb_model = XGBRegressor(n_estimators=500,learning_rate=0.05,n_jobs=4)
+# xgb_model.fit(OH_cols_train, Y_train, 
+#               early_stopping_rounds=5,
+#               eval_set=[(OH_cols_valid, Y_valid)],
+#               verbose=False)
+# predictions = xgb_model.predict(OH_cols_valid)
+# xgb_mae = mean_absolute_error(predictions, Y_valid)
+
+# # Create Column and Set to Predictions
+# Y_valid['preds'] = predictions
+
+
+# # Set DataFrame to Predictions -> Concatenate to Original Data -> Generate .csv File
+# validPredictions = pd.DataFrame(Y_valid['preds'])
+# xgbPredictions = pd.merge(wineData, validPredictions, how = 'left', left_index = True, right_index = True)
+# xgbPredictions.to_csv('csv/xgbPredictions.csv')
+# End ######################################################################################################################
+
+
+# # Type Check
+# print(type(wineData))
+# print(type(Y_valid['preds']))
 
 # print(xgb_mae) # MAE 2.39 with reduced country cardinality only
-print(xgb_mae) # MAE 2.466 with recuced country & variety cardinality, runtime greatly reduced
+# print(xgb_mae) # MAE 2.466 with recuced country & variety cardinality, runtime greatly reduced
+
+# print(predictions)
+# ***************************************************************************************************************************
