@@ -11,7 +11,17 @@ from sklearn.preprocessing import OneHotEncoder
 from sklearn.impute import SimpleImputer
 from sklearn.tree import DecisionTreeRegressor
 
-dataPath = 'csv/wineData.csv' # This dataset has reduced country and variety cardinality
+##################################################################### Functions ###########################################################################
+# Takes Original DataFrame, Predictions, and Model Name -> Outputs a .csv With Predictions Concatenated Based On Predicted Feature (Points)
+def outputCSV(originalDataFrame, predictions, modelName):
+    Y_valid['predictions'] = predictions
+    validPredictions = pd.DataFrame(Y_valid['predictions'])
+    modelPredictions = pd.merge(originalDataFrame, validPredictions, how = 'left', left_index = True, right_index = True)
+    modelPredictions.to_csv(f"csv/{modelName}.csv")
+###########################################################################################################################################################
+
+# This Dataset Has Reduced Country and Variety Cardinality
+dataPath = 'csv/wineData.csv' 
 wineData = pd.read_csv(dataPath)
 
 y = wineData.points
@@ -37,33 +47,25 @@ OH_cols_valid.index = X_valid.index
 
 # Uncomment All Between Lines  to Print .csv With Predictions For Random Forest Model #
 # Beginning ###############################################################################################################
-# rf_model = RandomForestRegressor(random_state=0) 
-# rf_model.fit(OH_cols_train, Y_train)
-# rf_val_predictions = rf_model.predict(OH_cols_valid)
-# rf_val_mae = mean_absolute_error(rf_val_predictions, Y_valid)
+rf_model = RandomForestRegressor(random_state=0) 
+rf_model.fit(OH_cols_train, Y_train)
+rf_val_predictions = rf_model.predict(OH_cols_valid)
+rf_val_mae = mean_absolute_error(rf_val_predictions, Y_valid)
 
-# Y_valid['predictions'] = rf_val_predictions
+outputCSV(wineData, rf_val_predictions, "randomForestModelOutput")
 
 # # Type Check
 # print(type(wineData))
 # print(type(Y_valid['predictions']))
-
-# # Uncomment Below to Set DataFrame to Predictions -> Concatenate to Original Data -> Generate .csv File
-# Y_preds = pd.DataFrame(Y_valid['predictions'])
-# randomForestPredictions = pd.merge(wineData, Y_preds, how = 'left', left_index = True, right_index = True)
-# randomForestPredictions.to_csv('csv/randomForestPredictions.csv')
 # End ######################################################################################################################
-
-# print(xgb_mae) # MAE 2.39 with reduced country cardinality only
-# print(xgb_mae) # MAE 2.466 with recuced country & variety cardinality, runtime greatly reduced
 
 # print(predictions)
 
-
- 
-# print(rf_val_mae) # MAE 2.364 with original country cardinality
-# print(rf_val_mae) # MAE 2.370 with reduced country cardinality
-# print(rf_val_mae) # MAE 2.465 with reduced country and variety cardinality
+# Mean Average Error Results
+# print(rf_val_mae) 
+# MAE 2.364 w/ Reduced Country Cardinality
+# MAE 2.370 w/ Reduced Country Cardinality
+# MAE 2.465 w/ Reduced Country and Variety Cardinality
 # print(rf_val_predictions)
 # ***************************************************************************************************************************
 
@@ -86,7 +88,9 @@ OH_cols_valid.index = X_valid.index
 # scores = {leaf_size: get_mae(leaf_size, OH_cols_train, OH_cols_valid, Y_train, Y_valid) for leaf_size in candidate_max_leaf_nodes}
 
 # best_tree_size = min(scores, key=scores.get)
-# print(best_tree_size) # 500 best tree size / MAE 2.37
+# print(best_tree_size)  
+
+# Best Tree Specifications: 500 best tree size | MAE 2.37
 # ***************************************************************************************************************************
 
 
@@ -102,26 +106,21 @@ OH_cols_valid.index = X_valid.index
 #               early_stopping_rounds=5,
 #               eval_set=[(OH_cols_valid, Y_valid)],
 #               verbose=False)
-# predictions = xgb_model.predict(OH_cols_valid)
-# xgb_mae = mean_absolute_error(predictions, Y_valid)
+# xgbPredictions = xgb_model.predict(OH_cols_valid)
+# xgb_mae = mean_absolute_error(xgbPredictions, Y_valid)
 
-# # Create Column and Set to Predictions
-# Y_valid['preds'] = predictions
-
-
-# # Set DataFrame to Predictions -> Concatenate to Original Data -> Generate .csv File
-# validPredictions = pd.DataFrame(Y_valid['preds'])
-# xgbPredictions = pd.merge(wineData, validPredictions, how = 'left', left_index = True, right_index = True)
-# xgbPredictions.to_csv('csv/xgbPredictions.csv')
+# outputCSV(wineData, xgbPredictions, "xgbRegressorOutput")
 # End ######################################################################################################################
-
 
 # # Type Check
 # print(type(wineData))
 # print(type(Y_valid['preds']))
 
-# print(xgb_mae) # MAE 2.39 with reduced country cardinality only
-# print(xgb_mae) # MAE 2.466 with recuced country & variety cardinality, runtime greatly reduced
+# Mean Average Error Results
+# print(xgb_mae)
+# MAE 2.39: w/ Reduced Country Cardinality Only
+# MAE 2.466: w/ Reduced Country and Variety Cardinality | Runtime Greatly Reduced
 
 # print(predictions)
 # ***************************************************************************************************************************
+
