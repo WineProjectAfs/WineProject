@@ -52,14 +52,14 @@ rf_model.fit(OH_cols_train, Y_train)
 rf_val_predictions = rf_model.predict(OH_cols_valid)
 rf_val_mae = mean_absolute_error(rf_val_predictions, Y_valid)
 
-outputCSV(wineData, rf_val_predictions, "randomForestModelOutput")
+# outputCSV(wineData, rf_val_predictions, "randomForestModelOutput")
 
 # # Type Check
 # print(type(wineData))
 # print(type(Y_valid['predictions']))
 # End ######################################################################################################################
 
-# print(predictions)
+print(rf_val_predictions.tostring)
 
 # Mean Average Error Results
 # print(rf_val_mae) 
