@@ -3,21 +3,32 @@
 # Import helpful libraries
 import pandas as pd
 import numpy as np
+import os
 from sklearn.ensemble import RandomForestRegressor
 from sklearn.metrics import mean_absolute_error
 from sklearn.model_selection import train_test_split
 from sklearn.preprocessing import OneHotEncoder
 from sklearn.impute import SimpleImputer
- 
+
+# Get the list of all files and directories
+# path = "C://Users//username//Desktop//xyz"
+dir_list = os.listdir()
+print(dir_list)
+
 # Load the data, and separate the target
 # data_path = 'winemag_data.csv' # Original data file
 data_path = 'winemag_data_first150k_edited.csv'
 home_data = pd.read_csv(data_path)
 
+home_data.head()
 
+countries_reviewed = home_data.groupby(['country', 'province']).description.agg([len])
+countries_reviewed.head()
 
+mi = countries_reviewed.index
+type(mi)
 
-home_data.groupby(['country', 'province']).apply(lambda df: df.title.iloc[0])
+## home_data.groupby(['country', 'province']).head() # .apply(lambda df: df.title.iloc[0])
 
 print("Done!")
 quit()
