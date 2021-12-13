@@ -5,12 +5,23 @@ from pandas.core.algorithms import rank
 from xgboost import XGBRegressor
 from sklearn.ensemble import RandomForestRegressor
 from sklearn.metrics import mean_absolute_error
+from sklearn.metrics import classification_report
 from sklearn.model_selection import train_test_split
 from sklearn.preprocessing import OneHotEncoder
 from sklearn.impute import SimpleImputer
 from sklearn.tree import DecisionTreeRegressor
 
-dataPath = 'csv/wineData.csv' # This dataset has reduced country and variety cardinality
+##################################################################### Functions ###########################################################################
+# Takes Original DataFrame, Predictions, and Model Name -> Outputs a .csv With Predictions Concatenated Based On Predicted Feature (Points)
+def outputCSV(originalDataFrame, predictions, modelName):
+    Y_valid['predictions'] = predictions
+    validPredictions = pd.DataFrame(Y_valid['predictions'])
+    modelPredictions = pd.merge(originalDataFrame, validPredictions, how = 'left', left_index = True, right_index = True)
+    modelPredictions.to_csv(f"csv/{modelName}.csv")
+###########################################################################################################################################################
+
+# This Dataset Has Reduced Country and Variety Cardinality
+dataPath = 'csv/wineData.csv' 
 wineData = pd.read_csv(dataPath)
 
 y = wineData.points
@@ -33,14 +44,30 @@ OH_cols_valid.index = X_valid.index
 # ***************************************************************************************************************************
 #                                                 Random Forest Model                                                       #
 # ***************************************************************************************************************************
+
+# Uncomment All Between Lines  to Print .csv With Predictions For Random Forest Model #
+# Beginning ###############################################################################################################
 rf_model = RandomForestRegressor(random_state=0) 
 rf_model.fit(OH_cols_train, Y_train)
 rf_val_predictions = rf_model.predict(OH_cols_valid)
 rf_val_mae = mean_absolute_error(rf_val_predictions, Y_valid)
- 
-# print(rf_val_mae) # MAE 2.364 with original country cardinality
-# print(rf_val_mae) # MAE 2.370 with reduced country cardinality
-# print(rf_val_mae) # MAE 2.465 with reduced country and variety cardinality
+
+outputCSV(wineData, rf_val_predictions, "randomForestModelOutput")
+
+# # Type Check
+# print(type(wineData))
+# print(type(Y_valid['predictions']))
+# End ######################################################################################################################
+
+# print(predictions)
+
+# Mean Average Error Results
+# print(rf_val_mae) 
+# MAE 2.364 w/ Reduced Country Cardinality
+# MAE 2.370 w/ Reduced Country Cardinality
+# MAE 2.465 w/ Reduced Country and Variety Cardinality
+# print(rf_val_predictions)
+# ***************************************************************************************************************************
 
 
 # ***************************************************************************************************************************
@@ -61,23 +88,47 @@ rf_val_mae = mean_absolute_error(rf_val_predictions, Y_valid)
 # scores = {leaf_size: get_mae(leaf_size, OH_cols_train, OH_cols_valid, Y_train, Y_valid) for leaf_size in candidate_max_leaf_nodes}
 
 # best_tree_size = min(scores, key=scores.get)
-# print(best_tree_size) # 500 best tree size / MAE 2.37
+# print(best_tree_size)  
+
+# Best Tree Specifications: 500 best tree size | MAE 2.37
+# ***************************************************************************************************************************
 
 
 # ***************************************************************************************************************************
 #                                        XGB Regressor Model w/ MAE Averages                                                #
 # ***************************************************************************************************************************
-xgb_model = XGBRegressor()
-xgb_model = XGBRegressor(n_estimators=500,learning_rate=0.05,n_jobs=4)
-xgb_model.fit(OH_cols_train, Y_train, 
-              early_stopping_rounds=5,
-              eval_set=[(OH_cols_valid, Y_valid)],
-              verbose=False)
-predictions = xgb_model.predict(OH_cols_valid)
-xgb_mae = mean_absolute_error(predictions, Y_valid)
 
+<<<<<<< HEAD
 # print(xgb_mae) # MAE 2.39 with reduced country cardinality only
 print(xgb_mae) # MAE 2.466 with recuced country & variety cardinality, runtime greatly reduced
 
 
 # TODO: Evaluate whether reducing the cardinality of country and variety effected predictions
+=======
+# Uncomment All Between Lines  to Print .csv With Predictions For XGB Regressor Model #
+# Beginning ###############################################################################################################
+# xgb_model = XGBRegressor()
+# xgb_model = XGBRegressor(n_estimators=500,learning_rate=0.05,n_jobs=4)
+# xgb_model.fit(OH_cols_train, Y_train, 
+#               early_stopping_rounds=5,
+#               eval_set=[(OH_cols_valid, Y_valid)],
+#               verbose=False)
+# xgbPredictions = xgb_model.predict(OH_cols_valid)
+# xgb_mae = mean_absolute_error(xgbPredictions, Y_valid)
+
+# outputCSV(wineData, xgbPredictions, "xgbRegressorOutput")
+# End ######################################################################################################################
+
+# # Type Check
+# print(type(wineData))
+# print(type(Y_valid['preds']))
+
+# Mean Average Error Results
+# print(xgb_mae)
+# MAE 2.39: w/ Reduced Country Cardinality Only
+# MAE 2.466: w/ Reduced Country and Variety Cardinality | Runtime Greatly Reduced
+
+# print(predictions)
+# ***************************************************************************************************************************
+
+>>>>>>> daniel-branch
