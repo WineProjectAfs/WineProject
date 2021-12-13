@@ -52,7 +52,7 @@ rf_model.fit(OH_cols_train, Y_train)
 rf_val_predictions = rf_model.predict(OH_cols_valid)
 rf_val_mae = mean_absolute_error(rf_val_predictions, Y_valid)
 
-outputCSV(wineData, rf_val_predictions, "randomForestModelOutput")
+# outputCSV(wineData, rf_val_predictions, "randomForestModelOutput")
 
 # # Type Check
 # print(type(wineData))
@@ -97,24 +97,16 @@ outputCSV(wineData, rf_val_predictions, "randomForestModelOutput")
 # ***************************************************************************************************************************
 #                                        XGB Regressor Model w/ MAE Averages                                                #
 # ***************************************************************************************************************************
-
-<<<<<<< HEAD
-# print(xgb_mae) # MAE 2.39 with reduced country cardinality only
-print(xgb_mae) # MAE 2.466 with recuced country & variety cardinality, runtime greatly reduced
-
-
-# TODO: Evaluate whether reducing the cardinality of country and variety effected predictions
-=======
 # Uncomment All Between Lines  to Print .csv With Predictions For XGB Regressor Model #
 # Beginning ###############################################################################################################
-# xgb_model = XGBRegressor()
-# xgb_model = XGBRegressor(n_estimators=500,learning_rate=0.05,n_jobs=4)
-# xgb_model.fit(OH_cols_train, Y_train, 
-#               early_stopping_rounds=5,
-#               eval_set=[(OH_cols_valid, Y_valid)],
-#               verbose=False)
-# xgbPredictions = xgb_model.predict(OH_cols_valid)
-# xgb_mae = mean_absolute_error(xgbPredictions, Y_valid)
+xgb_model = XGBRegressor()
+xgb_model = XGBRegressor(n_estimators=500,learning_rate=0.05,n_jobs=4)
+xgb_model.fit(OH_cols_train, Y_train, 
+              early_stopping_rounds=5,
+              eval_set=[(OH_cols_valid, Y_valid)],
+              verbose=False)
+xgbPredictions = xgb_model.predict(OH_cols_valid)
+xgb_mae = mean_absolute_error(xgbPredictions, Y_valid)
 
 # outputCSV(wineData, xgbPredictions, "xgbRegressorOutput")
 # End ######################################################################################################################
@@ -128,7 +120,6 @@ print(xgb_mae) # MAE 2.466 with recuced country & variety cardinality, runtime g
 # MAE 2.39: w/ Reduced Country Cardinality Only
 # MAE 2.466: w/ Reduced Country and Variety Cardinality | Runtime Greatly Reduced
 
-# print(predictions)
+print(predictions)
 # ***************************************************************************************************************************
 
->>>>>>> daniel-branch
