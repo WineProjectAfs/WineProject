@@ -1,0 +1,18 @@
+
+
+Create a "Best Value" calculation, using Rating/Price.  The highest score for the lowest cost.
+
+
+Remove rows with unique wineries (winery only has a single wine entry)
+or with some minimum number of rows per winery name.
+
+Check for variations in spelling, like variety: Insolia vs. Inzolia
+
+Check for duplicate descriptions?
+
+Try this:  Sort by Variety, then Price, then Vineyard.
+
+
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Country and Variety has been reformatted to only contain the top 10 values and all other set to Other

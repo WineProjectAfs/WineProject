@@ -12,7 +12,7 @@ data_path = 'wineData.csv'
 home_data = pd.read_csv(data_path, index_col=0)
  
 Dup_Rows = home_data[home_data.duplicated()]
-print("\n\nDuplicate Rows : \n {}".format(Dup_Rows))
+# print("\n\nDuplicate Rows : \n {}".format(Dup_Rows))
  
 DF_RM_DUP = home_data.drop_duplicates(keep=False)
  
