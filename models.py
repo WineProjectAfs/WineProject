@@ -97,6 +97,7 @@ rf_val_mae = mean_absolute_error(rf_val_predictions, Y_valid)
 # ***************************************************************************************************************************
 #                                        XGB Regressor Model w/ MAE Averages                                                #
 # ***************************************************************************************************************************
+
 # Uncomment All Between Lines  to Print .csv With Predictions For XGB Regressor Model #
 # Beginning ###############################################################################################################
 xgb_model = XGBRegressor()
@@ -108,7 +109,7 @@ xgb_model.fit(OH_cols_train, Y_train,
 xgbPredictions = xgb_model.predict(OH_cols_valid)
 xgb_mae = mean_absolute_error(xgbPredictions, Y_valid)
 
-# outputCSV(wineData, xgbPredictions, "xgbRegressorOutput")
+outputCSV(wineData, xgbPredictions, "xgbRegressorOutput2")
 # End ######################################################################################################################
 
 # # Type Check
@@ -120,6 +121,6 @@ xgb_mae = mean_absolute_error(xgbPredictions, Y_valid)
 # MAE 2.39: w/ Reduced Country Cardinality Only
 # MAE 2.466: w/ Reduced Country and Variety Cardinality | Runtime Greatly Reduced
 
-print(predictions)
+# print(xgbPredictions)
 # ***************************************************************************************************************************
 

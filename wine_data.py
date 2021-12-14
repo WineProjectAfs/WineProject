@@ -4,7 +4,8 @@
 from numpy.core.fromnumeric import var
 import pandas as pd
 import numpy as np
-from pandas.core.algorithms import rank
+from pandas.core.algorithms import duplicated, rank
+from scipy.sparse import data
 from xgboost import XGBRegressor
 from sklearn.ensemble import RandomForestRegressor
 from sklearn.metrics import mean_absolute_error
@@ -20,6 +21,10 @@ from sklearn.tree import DecisionTreeRegressor
 # Load the data, and separate the target
 dataPath = 'csv/winemag_data.csv'
 wineData = pd.read_csv(dataPath)
+
+checkingForDuplicates = pd.read_csv(dataPath, index_col=0)
+duplicates = checkingForDuplicates[checkingForDuplicates.duplicated()]
+print(duplicates.sum())
 
 # Create Y
 y = wineData.points 
@@ -73,6 +78,6 @@ varietyList = varietySeries.index.tolist()
 varietyExclusionList = varietyList[10:]
 wineData['variety'] = wineData['variety'].replace(varietyExclusionList, 'Other')
 
-wineData.to_csv('csv/wineData.csv')
+# wineData.to_csv('csv/wineData.csv')
 
 
