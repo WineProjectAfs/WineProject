@@ -22,7 +22,9 @@ from sklearn.tree import DecisionTreeRegressor
 dataPath = 'csv/winemag_data.csv'
 wineData = pd.read_csv(dataPath)
 
-print(wineData[wineData.duplicated(subset='description',keep='first')])
+# print(wineData[wineData.duplicated(subset='description',keep='first')])
+wineData['is_duplicate'] = wineData.duplicated()
+print(wineData.to_string())
 
 
 # Create Y
