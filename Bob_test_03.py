@@ -4,6 +4,7 @@
 import pandas as pd
 import numpy as np
 import os
+import site
 from sklearn.ensemble import RandomForestRegressor
 from sklearn.metrics import mean_absolute_error
 from sklearn.model_selection import train_test_split
@@ -30,8 +31,8 @@ type(mi)
 
 ## home_data.groupby(['country', 'province']).head() # .apply(lambda df: df.title.iloc[0])
 
-print("Done!")
-quit()
+## print("Done!")
+## sys.exit("This should exit the Python program, even in interactive mode.")
 
 
 
