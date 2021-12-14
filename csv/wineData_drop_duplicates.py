@@ -1,3 +1,5 @@
+# wineData_drop_duplicates.py
+# 
 # Import helpful libraries
 import pandas as pd
 import numpy as np
@@ -11,13 +13,20 @@ from sklearn.impute import SimpleImputer
 data_path = 'wineData.csv'
 home_data = pd.read_csv(data_path, index_col=0)
  
-Dup_Rows = home_data[home_data.duplicated()]
-# print("\n\nDuplicate Rows : \n {}".format(Dup_Rows))
- 
-DF_RM_DUP = home_data.drop_duplicates(keep=False)
+## Dup_Rows = home_data[home_data.duplicated(subset=['description'], keep='first')]
+## print("\n\nDuplicate Rows : \n {}".format(Dup_Rows))
+
+# home_data["is_duplicate"] = home_data.duplicated()
+home_data.drop_duplicates(subset=['description'], keep='first')
+# print(
+# home_data.loc[home_data['is_duplicate'] == 'True'].sum()
+# )
+home_data.to_csv('wineData_noDups.csv')
+
+## DF_RM_DUP = home_data.drop_duplicates(keep=False)
  
 # print('\n\nResult DataFrame after duplicate removal :\n', DF_RM_DUP.head(n=5))
-DF_RM_DUP.to_csv('wineData_noDups.csv')
+## DF_RM_DUP.to_csv('wineData_noDups.csv')
  
 # # Create Y
 # y = home_data.points 
