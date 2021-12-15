@@ -22,30 +22,13 @@ from sklearn.tree import DecisionTreeRegressor
 dataPath = 'csv/winemag_data.csv'
 wineData = pd.read_csv(dataPath,index_col=0)
 
-# print(wineData[wineData.duplicated(subset='description',keep='first')])
-# wineData['is_duplicate'] = wineData.duplicated()
-# print(wineData['is_duplicate'].value_counts())
-# # wineData.to_csv('csv/dups.csv')
-# wineData = wineData.drop_duplicates(subset='description')
-# droppedFrame = pd.read_csv("csv/winemag_data.csv").drop_duplicates(subset='description',keep='first')
-# droppedFrame['is_duplicate'] = droppedFrame.duplicated()
-# droppedFrame.to_csv('csv/droppedframe.csv')
 wineData['is_duplicate'] = wineData.duplicated()
-print(wineData['is_duplicate'].value_counts())
-# False 97851
-# True  53079
 wineData = wineData.drop_duplicates(subset='description')
-print(len(wineData.index))
-print(wineData['is_duplicate'].value_counts())
-# After duplicates are dropped, False: 97821, True: 0
-wineData.to_csv('csv/noDuplicates.csv')
-
-
-
-
-
+wineData.reset_index(drop=True,inplace=True)
+wineData = wineData.drop('is_duplicate',axis=1)
 # wineData.to_csv('csv/wineDataDropped.csv')
 
+wineData = pd.read_csv('csv/wineDataDropped.csv')
 
 # Create Y
 y = wineData.points 
@@ -69,36 +52,36 @@ X = wineData[features]
 # 7. The One-Hot Encoding should work properly, the perspective should be from a larger aggregate, and the MAE should be normal...not close to 2....which it should NOT be
 
 
-# countryData = wineData['country']
-# uniqueCountries = countryData.unique()
-# # print(uniqueCountries) # 49 unique countries
+countryData = wineData['country']
+uniqueCountries = countryData.unique()
+# print(uniqueCountries) # 49 unique countries
 
-# countrySeries = countryData.value_counts(ascending=False) 
+countrySeries = countryData.value_counts(ascending=False) 
 
-# rankedList = ['US','Italy','France','Spain','Chile','Argentina','Portugal','Australia','New Zealand','Austria','Germany',
-#               'South Africa','Greece','Israel','Hungary','Canada','Romania','Slovenia','Uruguay','Croatia','Bulgaria',
-#               'Moldova','Mexico','Turkey','Georgia','Lebanon','Cyprus','Brazil','Macedonia','Serbia','Morocco','England',
-#               'Luxembourg','Lithuania','India','Czech Republic','Ukraine','Switzerland','South Korea','Bosnia and Herzegovina',
-#               'China','Egypt'
-#               ,'Slovakia','Tunisia','Albania','Montenegro','Japan','US-France']
+rankedList = ['US','Italy','France','Spain','Chile','Argentina','Portugal','Australia','New Zealand','Austria','Germany',
+              'South Africa','Greece','Israel','Hungary','Canada','Romania','Slovenia','Uruguay','Croatia','Bulgaria',
+              'Moldova','Mexico','Turkey','Georgia','Lebanon','Cyprus','Brazil','Macedonia','Serbia','Morocco','England',
+              'Luxembourg','Lithuania','India','Czech Republic','Ukraine','Switzerland','South Korea','Bosnia and Herzegovina',
+              'China','Egypt'
+              ,'Slovakia','Tunisia','Albania','Montenegro','Japan','US-France']
 
-# exclusionList = rankedList[10:]
+exclusionList = rankedList[10:]
 
-# wineData['country'] = wineData['country'].replace(exclusionList, 'Other')
-# wineData['country'] = wineData['country'].fillna('Other')
+wineData['country'] = wineData['country'].replace(exclusionList, 'Other')
+wineData['country'] = wineData['country'].fillna('Other')
 
-# # Replacing the country column with the new country data adds an extra index column "Unnamed: 0", let's drop it
-# wineData = wineData.drop('Unnamed: 0', axis='columns')
+# Replacing the country column with the new country data adds an extra index column "Unnamed: 0", let's drop it
+wineData = wineData.drop('Unnamed: 0', axis='columns')
 
-# # reducing variety cardinality as we did with countries
-# varietyData = wineData['variety']
-# uniqueVarieites = varietyData.unique()
+# reducing variety cardinality as we did with countries
+varietyData = wineData['variety']
+uniqueVarieites = varietyData.unique()
 
-# varietySeries = varietyData.value_counts(ascending=False)
-# varietyList = varietySeries.index.tolist()
-# varietyExclusionList = varietyList[10:]
-# wineData['variety'] = wineData['variety'].replace(varietyExclusionList, 'Other')
+varietySeries = varietyData.value_counts(ascending=False)
+varietyList = varietySeries.index.tolist()
+varietyExclusionList = varietyList[10:]
+wineData['variety'] = wineData['variety'].replace(varietyExclusionList, 'Other')
 
-# # wineData.to_csv('csv/wineData.csv')
+wineData.to_csv('csv/wineData.csv')
 
 
