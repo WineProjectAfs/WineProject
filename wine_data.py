@@ -20,11 +20,31 @@ from sklearn.tree import DecisionTreeRegressor
 # ***************************************************************************************************************************
 # Load the data, and separate the target
 dataPath = 'csv/winemag_data.csv'
-wineData = pd.read_csv(dataPath)
+wineData = pd.read_csv(dataPath,index_col=0)
 
 # print(wineData[wineData.duplicated(subset='description',keep='first')])
+# wineData['is_duplicate'] = wineData.duplicated()
+# print(wineData['is_duplicate'].value_counts())
+# # wineData.to_csv('csv/dups.csv')
+# wineData = wineData.drop_duplicates(subset='description')
+# droppedFrame = pd.read_csv("csv/winemag_data.csv").drop_duplicates(subset='description',keep='first')
+# droppedFrame['is_duplicate'] = droppedFrame.duplicated()
+# droppedFrame.to_csv('csv/droppedframe.csv')
 wineData['is_duplicate'] = wineData.duplicated()
-print(wineData.to_string())
+print(wineData['is_duplicate'].value_counts())
+# False 97851
+# True  53079
+wineData = wineData.drop_duplicates(subset='description')
+print(len(wineData.index))
+print(wineData['is_duplicate'].value_counts())
+# After duplicates are dropped, False: 97821, True: 0
+wineData.to_csv('csv/noDuplicates.csv')
+
+
+
+
+
+# wineData.to_csv('csv/wineDataDropped.csv')
 
 
 # Create Y
