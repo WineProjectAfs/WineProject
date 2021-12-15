@@ -66,6 +66,7 @@ rf_val_mae = mean_absolute_error(rf_val_predictions, Y_valid)
 # MAE 2.364 w/ Reduced Country Cardinality
 # MAE 2.370 w/ Reduced Country Cardinality
 # MAE 2.465 w/ Reduced Country and Variety Cardinality
+# MAE 2.472 w/ Duplicates Dropped
 # print(rf_val_predictions)
 # ***************************************************************************************************************************
 
@@ -117,9 +118,10 @@ outputCSV(wineData, xgbPredictions, "xgbRegressorOutput2")
 # print(type(Y_valid['preds']))
 
 # Mean Average Error Results
-# print(xgb_mae)
+print(xgb_mae)
 # MAE 2.39: w/ Reduced Country Cardinality Only
-# MAE 2.466: w/ Reduced Country and Variety Cardinality | Runtime Greatly Reduced
+# MAE 2.466 w/ Reduced Country and Variety Cardinality | Runtime Greatly Reduced
+# MAE 2.473 w/ Duplicates Dropped
 
 # print(xgbPredictions)
 # ***************************************************************************************************************************

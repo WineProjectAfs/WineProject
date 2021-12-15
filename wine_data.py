@@ -82,6 +82,6 @@ varietyList = varietySeries.index.tolist()
 varietyExclusionList = varietyList[10:]
 wineData['variety'] = wineData['variety'].replace(varietyExclusionList, 'Other')
 
-wineData.to_csv('csv/wineData.csv')
+# wineData.to_csv('csv/wineData2.csv')
 
 
