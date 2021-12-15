@@ -21,7 +21,8 @@ def outputCSV(originalDataFrame, predictions, modelName):
 ###########################################################################################################################################################
 
 # This Dataset Has Reduced Country and Variety Cardinality
-dataPath = 'csv/wineData.csv' 
+# dataPath = 'csv/wineData.csv' 
+dataPath = 'csv/wineData2.csv' 
 wineData = pd.read_csv(dataPath)
 
 y = wineData.points
@@ -110,7 +111,7 @@ xgb_model.fit(OH_cols_train, Y_train,
 xgbPredictions = xgb_model.predict(OH_cols_valid)
 xgb_mae = mean_absolute_error(xgbPredictions, Y_valid)
 
-outputCSV(wineData, xgbPredictions, "xgbRegressorOutput2")
+outputCSV(wineData, xgbPredictions, "xgbRegressorOutput3")
 # End ######################################################################################################################
 
 # # Type Check

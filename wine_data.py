@@ -22,12 +22,13 @@ from sklearn.tree import DecisionTreeRegressor
 dataPath = 'csv/winemag_data.csv'
 wineData = pd.read_csv(dataPath,index_col=0)
 
+# Checking for and removing duplicate rows
 wineData['is_duplicate'] = wineData.duplicated()
 wineData = wineData.drop_duplicates(subset='description')
 wineData.reset_index(drop=True,inplace=True)
 wineData = wineData.drop('is_duplicate',axis=1)
-# wineData.to_csv('csv/wineDataDropped.csv')
 
+# wineData.to_csv('csv/wineDataDropped.csv')
 wineData = pd.read_csv('csv/wineDataDropped.csv')
 
 # Create Y
@@ -51,6 +52,8 @@ X = wineData[features]
 # 6. Set all other rows to "other"
 # 7. The One-Hot Encoding should work properly, the perspective should be from a larger aggregate, and the MAE should be normal...not close to 2....which it should NOT be
 
+# Dropping entries with scores <85, 14618 rows dropped
+wineData = wineData[wineData.points >= 85]
 
 countryData = wineData['country']
 uniqueCountries = countryData.unique()
@@ -82,6 +85,6 @@ varietyList = varietySeries.index.tolist()
 varietyExclusionList = varietyList[10:]
 wineData['variety'] = wineData['variety'].replace(varietyExclusionList, 'Other')
 
-# wineData.to_csv('csv/wineData2.csv')
+wineData.to_csv('csv/wineData2.csv')
 
 

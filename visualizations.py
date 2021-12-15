@@ -45,9 +45,9 @@ plt.show()
 # ***************************************************************************************************************************
 #                                      Scatter Plot for Average Score/Country                                               #
 # ***************************************************************************************************************************
-# plt.title('Scores by Country')
-# sns.scatterplot(x=wine_data.index, y=wine_data['points'])
-# plt.show()
+plt.title('Scores by Country')
+sns.scatterplot(x=wine_data.index, y=wine_data['points'])
+plt.show()
 
 # plt.savefig('graphs/scatterPlot.png') 
 
