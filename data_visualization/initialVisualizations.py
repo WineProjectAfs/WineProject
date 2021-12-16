@@ -7,7 +7,7 @@ import seaborn as sns
 from seaborn.matrix import heatmap
 import itertools
 
-data_path = 'csv/wineData.csv'
+data_path = 'data_output_csv/wineDataOutput.csv'
 wine_data = pd.read_csv(data_path, index_col='country')
 variety_data = pd.read_csv(data_path, index_col='variety')
 
@@ -24,32 +24,32 @@ variety_data = pd.read_csv(data_path, index_col='variety')
 # plt.xlabel('Countries')
 # plt.show()
 
-plt.savefig('graphs/BarPlot.png') # Save our graph
+# plt.savefig('graphs/BarPlot.png') # Save our graph
 
 
 # ***************************************************************************************************************************
 #                                      Bar Plot for Average Score/Variety                                                   #
 # ***************************************************************************************************************************
-plt.figure(figsize=(10,6))
-plt.ylim(80,100)
-plt.title('Average Wine Score by Variety')
-variety_plot = sns.barplot(x=variety_data.index,y=variety_data['points'])
-plt.ylabel('Average Score')
-plt.xlabel('Varieties')
-variety_plot.set_xticklabels(variety_plot.get_xticklabels(), rotation=40, ha='right')
-plt.tight_layout
-plt.show()
+# plt.figure(figsize=(10,6))
+# plt.ylim(80,100)
+# plt.title('Average Wine Score by Variety')
+# variety_plot = sns.barplot(x=variety_data.index,y=variety_data['points'])
+# plt.ylabel('Average Score')
+# plt.xlabel('Varieties')
+# variety_plot.set_xticklabels(variety_plot.get_xticklabels(), rotation=40, ha='right')
+# plt.tight_layout
+# plt.show()
 
 
 
 # ***************************************************************************************************************************
 #                                      Scatter Plot for Average Score/Country                                               #
 # ***************************************************************************************************************************
-plt.title('Scores by Country')
-sns.scatterplot(x=wine_data.index, y=wine_data['points'])
-plt.show()
+# plt.title('Scores by Country')
+# sns.scatterplot(x=wine_data.index, y=wine_data['points'])
+# plt.show()
 
-plt.savefig('graphs/scatterPlot.png') 
+# plt.savefig('graphs/scatterPlot.png') 
 
 # Only US, France, Italy, and Australia have wines that have scored 100
 # Scores of 100 may not be of great significance as for 100 there are only 24 entries?
@@ -126,7 +126,13 @@ plt.savefig('graphs/scatterPlot.png')
 # sns.heatmap(data=heatmap_data, annot=True)
 # plt.xlabel('Countries')
 # plt.show()
-    
+
+# ***************************************************************************************************************************
+#                                            Displot for Score Volume                                                       #
+# ***************************************************************************************************************************
+displotData = pd.read_csv(data_path)
+sns.displot(data=displotData,x='points',kind='kde')
+plt.show()
 
 
 
