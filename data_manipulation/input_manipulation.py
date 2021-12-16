@@ -1,6 +1,7 @@
 # ***************************************************************************************************************************
 #                                                         Imports                                                           #
 # ***************************************************************************************************************************
+
 from numpy.core.fromnumeric import var
 import pandas as pd
 import numpy as np
@@ -51,7 +52,11 @@ def dataManipulation(wineData):
     wineData.reset_index(drop=True,inplace=True)
     wineData = wineData.drop('is_duplicate',axis=1)
     
+<<<<<<< HEAD
     # ************************************************Remove Wines Less than 85 Points***************************************
+=======
+    # ********************************Code Not Used......Remove Wines Less than 85 Points************************************
+>>>>>>> f85badf64b5ec230204393650713e6f52f379922
     # wineData = wineData[wineData.points >= 85]
 
     # **************************Remove Countries Outside of Top 10 Most Occurring and Label as 'Other'***********************
@@ -70,7 +75,7 @@ def dataManipulation(wineData):
                 'Luxembourg','Lithuania','India','Czech Republic','Ukraine','Switzerland','South Korea','Bosnia and Herzegovina',
                 'China','Egypt','Slovakia','Tunisia','Albania','Montenegro','Japan','US-France']
 
-    #Grab Value Counts per Unique Entry -> Turn Into List -> Take Top 10 -> Replace Anything Not In Top 10
+    # Grab Value Counts per Unique Entry -> Turn Into List -> Take Top 10 -> Replace Anything Not In Top 10
     exclusionList = rankedList[10:]
     wineData['country'] = wineData['country'].replace(exclusionList, 'Other')
     wineData['country'] = wineData['country'].fillna('Other')

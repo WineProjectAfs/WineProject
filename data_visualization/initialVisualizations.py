@@ -1,3 +1,7 @@
+
+# ***************************************************************************************************************************
+#                                                   Imports                                                                 #
+# ***************************************************************************************************************************
 from numpy.core.fromnumeric import var
 import pandas as pd
 import numpy as np
@@ -7,7 +11,7 @@ import seaborn as sns
 from seaborn.matrix import heatmap
 import itertools
 
-data_path = 'csv/wineData.csv'
+data_path = 'data_output_csv/wineData.csv'
 wine_data = pd.read_csv(data_path, index_col='country')
 variety_data = pd.read_csv(data_path, index_col='variety')
 
