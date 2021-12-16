@@ -22,7 +22,7 @@ y = predictedFeature(wineData)
 X = predictingFeatures(wineData, features)
 
 # Data Manipulation: Removes Wines That Score <= 85 Points -> Reduces Cardinality of 'Variety' and 'Countries' -> Outputs .csv and Returns New DataFrame
-# wineData = dataManipulation(wineData)
+wineData = dataManipulation(wineData)
 
 savePath = 'data_output_csv/wineDataOutput.csv'
 # wineData.to_csv('data_output_csv/wineDataOutput.csv')
