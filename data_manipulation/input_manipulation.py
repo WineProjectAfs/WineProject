@@ -51,7 +51,7 @@ def dataManipulation(wineData):
     wineData = wineData.drop('is_duplicate',axis=1)
     
     # ************************************************Remove Wines Less than 85 Points***************************************
-    wineData = wineData[wineData.points >= 85]
+    # wineData = wineData[wineData.points >= 85]
 
     # **************************Remove Countries Outside of Top 10 Most Occurring and Label as 'Other'***********************
     countryData = wineData['country']

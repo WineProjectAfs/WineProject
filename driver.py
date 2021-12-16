@@ -11,7 +11,7 @@ from sklearn.preprocessing import OneHotEncoder
 from sklearn.impute import SimpleImputer
 from sklearn.tree import DecisionTreeRegressor
 
-from data_manipulation.data_manipulation import *
+from data_manipulation.input_manipulation import *
 
 
 # Data Set-Up
@@ -50,19 +50,16 @@ OH_cols_valid.index = X_valid.index
 # rf_val_predictions = rf_model.predict(OH_cols_valid)
 # rf_val_mae = mean_absolute_error(rf_val_predictions, Y_valid)
 
-<<<<<<< HEAD:models.py
-# outputCSV(wineData, rf_val_predictions, "randomForestModelOutput")
-=======
+
 # # Output CSV
 # outputCSV(wineData, rf_val_predictions, "randomForestModelOutput", Y_valid)
->>>>>>> b17da53b946871e5a9858d2980f0da2e81b501e7:driver.py
 
 # # Type Check
 # print(type(wineData))
 # print(type(Y_valid['predictions']))
 # End ######################################################################################################################
 
-print(rf_val_predictions.tostring)
+# print(rf_val_predictions.tostring)
 
 # Mean Average Error Results
 # print(rf_val_mae) 
