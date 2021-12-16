@@ -11,7 +11,7 @@ from sklearn.preprocessing import OneHotEncoder
 from sklearn.impute import SimpleImputer
 from sklearn.tree import DecisionTreeRegressor
 
-from data_manipulation.data_manipulation import *
+from data_manipulation.input_manipulation import *
 
 
 # Data Set-Up
