@@ -22,9 +22,11 @@ y = predictedFeature(wineData)
 X = predictingFeatures(wineData, features)
 
 # Data Manipulation: Removes Wines That Score <= 85 Points -> Reduces Cardinality of 'Variety' and 'Countries' -> Outputs .csv and Returns New DataFrame
-wineData = dataManipulation(wineData)
+# wineData = dataManipulation(wineData)
 
-wineData.to_csv('data_output_csv/wineDataOutput.csv')
+savePath = 'data_output_csv/wineDataOutput.csv'
+# wineData.to_csv('data_output_csv/wineDataOutput.csv')
+wineData = pd.read_csv(savePath)
 
 # Split Into Validation and Training Data
 X_train, X_valid, Y_train, Y_valid = train_test_split(X, y, random_state=1)
@@ -37,6 +39,7 @@ OH_cols_valid = pd.DataFrame(OH_encoder.transform(X_valid[features]))
 # One-hot encoding Removed Index...Put It Back
 OH_cols_train.index = X_train.index
 OH_cols_valid.index = X_valid.index
+
 
 
 # ***************************************************************************************************************************
@@ -111,7 +114,7 @@ xgb_mae = mean_absolute_error(xgbPredictions, Y_valid)
 
 
 # Output CSV
-outputCSV(wineData, xgbPredictions, "xgbRegressorOutput", Y_valid)
+# outputCSV(wineData, xgbPredictions, "xgbRegressorOutput", Y_valid)
 # End ######################################################################################################################
 
 # # Type Check
@@ -119,7 +122,7 @@ outputCSV(wineData, xgbPredictions, "xgbRegressorOutput", Y_valid)
 # print(type(Y_valid['preds']))
 
 # Mean Average Error Results
-# print(xgb_mae)
+print(xgb_mae)
 # MAE 2.39: w/ Reduced Country Cardinality Only
 # MAE 2.466 w/ Reduced Country and Variety Cardinality | Runtime Greatly Reduced
 # MAE 2.473 w/ Duplicates Dropped
