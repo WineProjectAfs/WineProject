@@ -6,6 +6,7 @@ import pandas as pd
 import numpy as np
 from pandas.core.algorithms import rank, duplicated
 from scipy.sparse import data
+from sklearn.utils import validation
 from xgboost import XGBRegressor
 from sklearn.ensemble import RandomForestRegressor
 from sklearn.metrics import mean_absolute_error
@@ -99,6 +100,7 @@ def dataManipulation(wineData):
 
 # Takes Original DataFrame, Predictions, and Model Name -> Outputs a .csv With Predictions Concatenated Based On Predicted Feature (Points)
 def outputCSV(originalDataFrame, predictions, modelName, validationData):
+    validationData = validationData.copy()
     validationData['predictions'] = predictions
     validPredictions = pd.DataFrame(validationData['predictions'])
     modelPredictions = pd.merge(originalDataFrame, validPredictions, how = 'left', left_index = True, right_index = True)

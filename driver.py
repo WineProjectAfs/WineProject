@@ -1,3 +1,4 @@
+from os import O_NOINHERIT
 from numpy.core.fromnumeric import var
 import pandas as pd
 import numpy as np
@@ -17,16 +18,14 @@ from data_manipulation.input_manipulation import *
 # Data Set-Up
 dataPath = 'source_csv/winemag_data.csv' 
 wineData = setUpData(dataPath)
-features = ['country', 'variety']
-y = predictedFeature(wineData)
-X = predictingFeatures(wineData, features)
 
 # Data Manipulation: Removes Wines That Score <= 85 Points -> Reduces Cardinality of 'Variety' and 'Countries' -> Outputs .csv and Returns New DataFrame
 wineData = dataManipulation(wineData)
+wineData.to_csv('data_output_csv/wineDataOutput.csv')
 
-savePath = 'data_output_csv/wineDataOutput.csv'
-# wineData.to_csv('data_output_csv/wineDataOutput.csv')
-wineData = pd.read_csv(savePath)
+features = ['country', 'variety']
+y = predictedFeature(wineData)
+X = predictingFeatures(wineData, features)
 
 # Split Into Validation and Training Data
 X_train, X_valid, Y_train, Y_valid = train_test_split(X, y, random_state=1)
@@ -48,18 +47,18 @@ OH_cols_valid.index = X_valid.index
 
 # Uncomment All Between Lines  to Print .csv With Predictions For Random Forest Model #
 # Beginning ###############################################################################################################
-# rf_model = RandomForestRegressor(random_state=0) 
-# rf_model.fit(OH_cols_train, Y_train)
-# rf_val_predictions = rf_model.predict(OH_cols_valid)
-# rf_val_mae = mean_absolute_error(rf_val_predictions, Y_valid)
+rf_model = RandomForestRegressor(random_state=0) 
+rf_model.fit(OH_cols_train, Y_train)
+rf_val_predictions = rf_model.predict(OH_cols_valid)
+rf_val_mae = mean_absolute_error(rf_val_predictions, Y_valid)
 
-# # Output CSV
-# outputCSV(wineData, rf_val_predictions, "randomForestModelOutput", Y_valid)
+# Output CSV
+outputCSV(wineData, rf_val_predictions, "randomForestModelOutput", Y_valid)
+# End ######################################################################################################################
 
 # # Type Check
 # print(type(wineData))
 # print(type(Y_valid['predictions']))
-# End ######################################################################################################################
 
 # print(rf_val_predictions.tostring)
 
@@ -112,9 +111,8 @@ xgb_model.fit(OH_cols_train, Y_train,
 xgbPredictions = xgb_model.predict(OH_cols_valid)
 xgb_mae = mean_absolute_error(xgbPredictions, Y_valid)
 
-
 # Output CSV
-# outputCSV(wineData, xgbPredictions, "xgbRegressorOutput", Y_valid)
+outputCSV(wineData, xgbPredictions, "xgbRegressorOutput", Y_valid)
 # End ######################################################################################################################
 
 # # Type Check
@@ -122,11 +120,13 @@ xgb_mae = mean_absolute_error(xgbPredictions, Y_valid)
 # print(type(Y_valid['preds']))
 
 # Mean Average Error Results
-print(xgb_mae)
+# print(xgb_mae)
 # MAE 2.39: w/ Reduced Country Cardinality Only
 # MAE 2.466 w/ Reduced Country and Variety Cardinality | Runtime Greatly Reduced
 # MAE 2.473 w/ Duplicates Dropped
-
 # print(xgbPredictions)
+# xgbDF = pd.read_csv('data_output_csv/xgbRegressorOutput.csv')
+# print(xgbDF['0'].mean())      # 87.953 average predicted score - first 24455
+# print(xgbDF['points'].mean()) # 87.957 average score
 # ***************************************************************************************************************************
 
