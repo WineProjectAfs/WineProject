@@ -130,8 +130,31 @@ variety_data = pd.read_csv(data_path, index_col='variety')
 # ***************************************************************************************************************************
 #                                            Displot for Score Volume                                                       #
 # ***************************************************************************************************************************
-displotData = pd.read_csv(data_path)
-sns.displot(data=displotData,x='points',kind='kde')
+# displotData = pd.read_csv(data_path)
+# sns.displot(data=displotData,x='points',kind='kde')
+# plt.show()
+
+# ***************************************************************************************************************************
+#                                                   Price/Score Plots                                                       #
+# ***************************************************************************************************************************
+# displotData = pd.read_csv(data_path)
+# sns.displot(data=displotData,x='points',kind='kde')
+# plt.show()
+
+hexData=pd.read_csv(data_path)
+# hexData[hexData['price'] < 100].plot.hexbin(x='price', y='points', gridsize=15)
+# plt.ylabel('Points')
+# plt.xlabel('Price')
+# plt.show()
+
+# hexData[hexData['price'] < 100].plot.hexbin(x='points', y='price', gridsize=15)
+# plt.ylabel('Price')
+# plt.xlabel('Points')
+# plt.show()
+
+hexData[hexData['price'] < 100].sample(100).plot.scatter(x='price', y='points')
+plt.ylabel('Points')
+plt.xlabel('Price')
 plt.show()
 
 
