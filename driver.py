@@ -14,12 +14,13 @@ from sklearn.tree import DecisionTreeRegressor
 
 from data_manipulation.input_manipulation import *
 
+test = 'test'
 
 # Data Set-Up
 dataPath = 'source_csv/winemag_data.csv' 
 wineData = setUpData(dataPath)
 
-# Data Manipulation: Removes Wines That Score <= 85 Points -> Reduces Cardinality of 'Variety' and 'Countries' -> Outputs .csv and Returns New DataFrame
+# Data Manipulation: Reduces Cardinality of 'Variety' and 'Countries' -> Outputs .csv and Returns New DataFrame
 wineData = dataManipulation(wineData)
 wineData.to_csv('data_output_csv/wineDataOutput.csv')
 
@@ -38,7 +39,6 @@ OH_cols_valid = pd.DataFrame(OH_encoder.transform(X_valid[features]))
 # One-hot encoding Removed Index...Put It Back
 OH_cols_train.index = X_train.index
 OH_cols_valid.index = X_valid.index
-
 
 
 # ***************************************************************************************************************************
@@ -102,9 +102,21 @@ outputCSV(wineData, rf_val_predictions, "randomForestModelOutput", Y_valid)
 
 # Uncomment All Between Lines  to Print .csv With Predictions For XGB Regressor Model #
 # Beginning ###############################################################################################################
+# xgb_model = XGBRegressor()
+# xgb_model = XGBRegressor(n_estimators=500,learning_rate=0.05,n_jobs=4)
+# xgb_model.fit(OH_cols_train, Y_train, 
+#               early_stopping_rounds=5,
+#               eval_set=[(OH_cols_valid, Y_valid)],
+#               verbose=False)
+# xgbPredictions = xgb_model.predict(OH_cols_valid)
+# xgb_mae = mean_absolute_error(xgbPredictions, Y_valid)
+
+# # Output CSV
+# outputCSV(wineData, xgbPredictions, "xgbRegressorOutput", Y_valid)
+
 xgb_model = XGBRegressor()
 xgb_model = XGBRegressor(n_estimators=500,learning_rate=0.05,n_jobs=4)
-xgb_model.fit(OH_cols_train, Y_train, 
+xgb_model.fit(X, y, 
               early_stopping_rounds=5,
               eval_set=[(OH_cols_valid, Y_valid)],
               verbose=False)
@@ -112,7 +124,7 @@ xgbPredictions = xgb_model.predict(OH_cols_valid)
 xgb_mae = mean_absolute_error(xgbPredictions, Y_valid)
 
 # Output CSV
-outputCSV(wineData, xgbPredictions, "xgbRegressorOutput", Y_valid)
+outputCSV(wineData, xgbPredictions, "xgbRegressorOutput2", Y_valid)
 # End ######################################################################################################################
 
 # # Type Check

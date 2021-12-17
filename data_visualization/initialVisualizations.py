@@ -28,7 +28,7 @@ variety_data = pd.read_csv(data_path, index_col='variety')
 # plt.xlabel('Countries')
 # plt.show()
 
-plt.savefig('graphs/BarPlot.png') # Save our graph
+# plt.savefig('graphs/BarPlot.png') # Save our graph
 
 
 # ***************************************************************************************************************************
