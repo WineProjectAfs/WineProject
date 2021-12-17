@@ -11,7 +11,7 @@ import seaborn as sns
 from seaborn.matrix import heatmap
 import itertools
 
-data_path = 'data_output_csv/wineData.csv'
+data_path = 'data_output_csv/wineDataOutput.csv'
 wine_data = pd.read_csv(data_path, index_col='country')
 variety_data = pd.read_csv(data_path, index_col='variety')
 
@@ -53,7 +53,7 @@ plt.title('Scores by Country')
 sns.scatterplot(x=wine_data.index, y=wine_data['points'])
 plt.show()
 
-plt.savefig('graphs/scatterPlot.png') 
+# plt.savefig('graphs/scatterPlot.png') 
 
 # Only US, France, Italy, and Australia have wines that have scored 100
 # Scores of 100 may not be of great significance as for 100 there are only 24 entries?

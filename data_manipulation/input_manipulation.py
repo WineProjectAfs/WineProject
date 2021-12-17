@@ -52,11 +52,8 @@ def dataManipulation(wineData):
     wineData.reset_index(drop=True,inplace=True)
     wineData = wineData.drop('is_duplicate',axis=1)
     
-<<<<<<< HEAD
-    # ************************************************Remove Wines Less than 85 Points***************************************
-=======
+
     # ********************************Code Not Used......Remove Wines Less than 85 Points************************************
->>>>>>> f85badf64b5ec230204393650713e6f52f379922
     # wineData = wineData[wineData.points >= 85]
 
     # **************************Remove Countries Outside of Top 10 Most Occurring and Label as 'Other'***********************

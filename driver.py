@@ -102,21 +102,9 @@ outputCSV(wineData, rf_val_predictions, "randomForestModelOutput", Y_valid)
 
 # Uncomment All Between Lines  to Print .csv With Predictions For XGB Regressor Model #
 # Beginning ###############################################################################################################
-# xgb_model = XGBRegressor()
-# xgb_model = XGBRegressor(n_estimators=500,learning_rate=0.05,n_jobs=4)
-# xgb_model.fit(OH_cols_train, Y_train, 
-#               early_stopping_rounds=5,
-#               eval_set=[(OH_cols_valid, Y_valid)],
-#               verbose=False)
-# xgbPredictions = xgb_model.predict(OH_cols_valid)
-# xgb_mae = mean_absolute_error(xgbPredictions, Y_valid)
-
-# # Output CSV
-# outputCSV(wineData, xgbPredictions, "xgbRegressorOutput", Y_valid)
-
 xgb_model = XGBRegressor()
 xgb_model = XGBRegressor(n_estimators=500,learning_rate=0.05,n_jobs=4)
-xgb_model.fit(X, y, 
+xgb_model.fit(OH_cols_train, Y_train, 
               early_stopping_rounds=5,
               eval_set=[(OH_cols_valid, Y_valid)],
               verbose=False)
@@ -124,7 +112,7 @@ xgbPredictions = xgb_model.predict(OH_cols_valid)
 xgb_mae = mean_absolute_error(xgbPredictions, Y_valid)
 
 # Output CSV
-outputCSV(wineData, xgbPredictions, "xgbRegressorOutput2", Y_valid)
+outputCSV(wineData, xgbPredictions, "xgbRegressorOutput", Y_valid)
 # End ######################################################################################################################
 
 # # Type Check
