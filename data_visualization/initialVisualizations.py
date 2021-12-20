@@ -10,19 +10,28 @@ import itertools
 data_path = 'data_output_csv/wineDataOutput.csv'
 wine_data = pd.read_csv(data_path, index_col='country')
 variety_data = pd.read_csv(data_path, index_col='variety')
+point_data = pd.read_csv('data_output_csv/pointDropped.csv',index_col='country')
 
 # Uncomment Plots you would like to show and comment those you do not 
 
 # ***************************************************************************************************************************
 #                                      Bar Plot for Average Score/Country                                                   #
 # ***************************************************************************************************************************
-# plt.figure(figsize=(10,6))
-# plt.ylim(80,95)
-# plt.title('Average Wine Score by Country')
-# sns.barplot(x = wine_data.index, y = wine_data['points'])
-# plt.ylabel('Average Score')
-# plt.xlabel('Countries')
-# plt.show()
+plt.figure(figsize=(10,6))
+plt.ylim(80,95)
+plt.title('Average Wine Score by Country')
+sns.barplot(x = wine_data.index, y = wine_data['points'])
+plt.ylabel('Average Score')
+plt.xlabel('Countries')
+plt.show()
+
+plt.figure(figsize=(10,6))
+plt.ylim(80,95)
+plt.title('Average Wine Score by Country')
+sns.barplot(x = point_data.index, y = point_data['points'])
+plt.ylabel('Average Score')
+plt.xlabel('Countries')
+plt.show()
 
 # plt.savefig('graphs/BarPlot.png') # Save our graph
 
@@ -152,10 +161,10 @@ hexData=pd.read_csv(data_path)
 # plt.xlabel('Points')
 # plt.show()
 
-hexData[hexData['price'] < 100].sample(100).plot.scatter(x='price', y='points')
-plt.ylabel('Points')
-plt.xlabel('Price')
-plt.show()
+# hexData[hexData['price'] < 100].sample(100).plot.scatter(x='price', y='points')
+# plt.ylabel('Points')
+# plt.xlabel('Price')
+# plt.show()
 
 
 

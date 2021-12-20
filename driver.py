@@ -5,6 +5,7 @@ from numpy.core.fromnumeric import var
 import pandas as pd
 import numpy as np
 from pandas.core.algorithms import rank
+from pandas.core.frame import DataFrame
 from xgboost import XGBRegressor
 from sklearn.ensemble import RandomForestRegressor
 from sklearn.metrics import mean_absolute_error
@@ -13,6 +14,7 @@ from sklearn.model_selection import train_test_split
 from sklearn.preprocessing import OneHotEncoder
 from sklearn.impute import SimpleImputer
 from sklearn.tree import DecisionTreeRegressor
+from collections import OrderedDict
 
 from data_manipulation.input_manipulation import *
 
@@ -23,7 +25,7 @@ wineData = setUpData(dataPath)
 
 # Data Manipulation: Removes Wines That Score <= 85 Points -> Reduces Cardinality of 'Variety' and 'Countries' -> Outputs .csv and Returns New DataFrame
 wineData = dataManipulation(wineData)
-wineData.to_csv('data_output_csv/wineDataOutputTest.csv')
+# wineData.to_csv('data_output_csv/wineDataOutputTest.csv')
 
 features = ['country', 'variety']
 y = predictedFeature(wineData)
@@ -40,7 +42,6 @@ OH_cols_valid = pd.DataFrame(OH_encoder.transform(X_valid[features]))
 # One-hot encoding Removed Index...Put It Back
 OH_cols_train.index = X_train.index
 OH_cols_valid.index = X_valid.index
-
 
 
 # ***************************************************************************************************************************
@@ -114,20 +115,12 @@ OH_cols_valid.index = X_valid.index
 # xgb_mae = mean_absolute_error(xgbPredictions, Y_valid)
 
 # # Output CSV
-# outputCSV(wineData, xgbPredictions, "xgbRegressorOutput", Y_valid)
+# outputCSV(wineData, xgbPredictions, "xgbRegressorOutput2", Y_valid)
 # End ######################################################################################################################
 
-xgb_model = XGBRegressor()
-xgb_model = XGBRegressor(n_estimators=500,learning_rate=0.05,n_jobs=4)
-xgb_model.fit(OH_cols_train, Y_train, 
-              early_stopping_rounds=5,
-              eval_set=[(OH_cols_valid, Y_valid)],
-              verbose=False)
-xgbPredictions = xgb_model.predict(OH_cols_valid)
-xgb_mae = mean_absolute_error(xgbPredictions, Y_valid)
-
-# Output CSV
-outputCSV(wineData, xgbPredictions, "xgbRegressorOutputTest", Y_valid)
+# test = pd.read_csv('data_output_csv/wineDataOutPut.csv')
+# count = test[test.points < 85].sum()
+# print(count)
 
 # # Type Check
 # print(type(wineData))
@@ -144,20 +137,85 @@ outputCSV(wineData, xgbPredictions, "xgbRegressorOutputTest", Y_valid)
 # print(xgbDF['points'].mean()) # 87.957 average score
 # ***************************************************************************************************************************
 
+# Testing out dropping entries with < 85 points
 
-# This loops generates a dataframe for each unique country then stores those dataframes in a list
-# country_list = []
+# allpoints = {}
+# droppedpoints = {}
+# point_data = pd.read_csv('data_output_csv/pointDropped.csv')
+
 # for country in wineData['country'].unique():
 #     str = f'{country}_df'
 #     locals()[str] = wineData[wineData.country == country]
-#     country_list.append(locals()[str])
+#     point_avg = locals()[str]['points'].mean()
+#     allpoints.update({str:round(point_avg,2)})
 
-# country_wines_dict = {}
-# for country in country_list:
-#     country_wines_dict.update({country:1})
+# for country in point_data['country'].unique():
+#     str = f'{country}_df'
+#     locals()[str] = point_data[point_data.country == country]
+#     point_avg = locals()[str]['points'].mean()
+#     droppedpoints.update({str:round(point_avg,2)})
 
-# # US_df = wineData['country' == 'US']
-# # Spain_df = wineData['country' == 'Spain']
+# print(allpoints)
+# print(droppedpoints)
 
-# # print(country_list)
-# # print(country_wines_list)
+# output = pd.read_csv('data_output_csv/xgbRegressorOutput.csv')
+# output2 = pd.read_csv('data_output_csv/xgbRegressorOutput2.csv')
+# print(output['0'].mean())
+# print(output2['0'].mean())
+
+# This loop generates a dataframe for each unique country then stores those dataframes in a list
+country_list = []
+
+for country in wineData['country'].unique():
+    country_list.append(f'{country}_df')
+
+def countryFrame(country):
+    globals()[str] = wineData[wineData.country == country]
+    country_list.append(globals()[str])
+
+for country in wineData['country'].unique():
+    countryFrame(country)
+
+US_df = wineData[wineData.country == 'US']
+Spain_df = wineData[wineData.country == 'Spain']
+France_df = wineData[wineData.country == 'France']
+Italy_df = wineData[wineData.country == 'Italy']
+New_Zealand_df = wineData[wineData.country == 'New Zealand']
+Other_df = wineData[wineData.country == 'Other']
+Argentina_df = wineData[wineData.country == 'Argentina']
+Australia_df = wineData[wineData.country == 'Australia']
+Portugal_df = wineData[wineData.country == 'Portugal']
+Chile_df = wineData[wineData.country == 'Chile']
+Austria_df = wineData[wineData.country == 'Austria']
+
+# print(country_list)
+# print(US_df)
+# print(France_df)
+
+allpoints = {}
+
+for country in wineData['country'].unique():
+    str = f'{country}_df'
+    locals()[str] = wineData[wineData.country == country]
+    point_avg = locals()[str]['points'].mean()
+    allpoints.update({str:round(point_avg,2)})
+
+# print(output['0'].mean())
+print(allpoints)
+# Average predicted score by country
+# {'US_df': 87.91, 'Spain_df': 86.76, 'France_df': 88.92, 'Italy_df': 88.39,
+#  'New Zealand_df': 87.64, 'Other_df': 87.56, 'Argentina_df': 86.08,
+#  'Australia_df': 87.96, 'Portugal_df': 88.12, 'Chile_df': 86.28, 'Austria_df': 89.38}
+
+print(US_df['region_1'].unique().size)
+print(Spain_df['region_1'].unique().size)
+print(France_df['region_1'].unique().size)
+print(Italy_df['region_1'].unique().size)
+print(New_Zealand_df['region_1'].unique().size)
+print(Other_df['region_1'].unique().size)
+print(Argentina_df['region_1'].unique().size)
+print(Australia_df['region_1'].unique().size)
+print(Portugal_df['region_1'].unique().size)
+print(Chile_df['region_1'].unique().size)
+print(Austria_df['region_1'].unique().size)
+print(Austria_df)
