@@ -187,6 +187,8 @@ Australia_df = wineData[wineData.country == 'Australia']
 Portugal_df = wineData[wineData.country == 'Portugal']
 Chile_df = wineData[wineData.country == 'Chile']
 Austria_df = wineData[wineData.country == 'Austria']
+countries_list = [US_df,Spain_df,France_df,Italy_df,New_Zealand_df,Other_df,
+                  Argentina_df,Australia_df,Portugal_df]
 
 # print(country_list)
 # print(US_df)
@@ -200,22 +202,44 @@ for country in wineData['country'].unique():
     point_avg = locals()[str]['points'].mean()
     allpoints.update({str:round(point_avg,2)})
 
+print(sorted(allpoints.items(), key=lambda x: x[1], reverse=True))
+
+# sorted_keys = sorted(dict1, key=dict1.get)  # [1, 3, 2]
+
+# for w in sorted_keys:
+#     sorted_dict[w] = dict1[w]
+
 # print(output['0'].mean())
-print(allpoints)
+# print(allpoints)
 # Average predicted score by country
 # {'US_df': 87.91, 'Spain_df': 86.76, 'France_df': 88.92, 'Italy_df': 88.39,
 #  'New Zealand_df': 87.64, 'Other_df': 87.56, 'Argentina_df': 86.08,
 #  'Australia_df': 87.96, 'Portugal_df': 88.12, 'Chile_df': 86.28, 'Austria_df': 89.38}
 
-print(US_df['region_1'].unique().size)
-print(Spain_df['region_1'].unique().size)
-print(France_df['region_1'].unique().size)
-print(Italy_df['region_1'].unique().size)
-print(New_Zealand_df['region_1'].unique().size)
-print(Other_df['region_1'].unique().size)
-print(Argentina_df['region_1'].unique().size)
-print(Australia_df['region_1'].unique().size)
-print(Portugal_df['region_1'].unique().size)
-print(Chile_df['region_1'].unique().size)
-print(Austria_df['region_1'].unique().size)
-print(Austria_df)
+# print(US_df['province'].unique().size)
+# print(Spain_df['province'].unique().size)
+# print(France_df['province'].unique().size)
+# print(Italy_df['province'].unique().size)
+# print(New_Zealand_df['province'].unique().size)
+# print(Other_df['province'].unique().size)
+# print(Argentina_df['province'].unique().size)
+# print(Australia_df['province'].unique().size)
+# print(Portugal_df['province'].unique().size)
+# print(Chile_df['province'].unique().size)
+# print(Austria_df['province'].unique().size)
+
+# print(US_df['province'].unique().size)
+# print(Spain_df['province'].unique().size)
+# print(France_df['province'].unique().size)
+# print(Italy_df['province'].unique().size)
+# print(New_Zealand_df['province'].unique().size)
+# print(Other_df['province'].unique().size)
+# print(Argentina_df['province'].unique().size)
+# print(Australia_df['province'].unique().size)
+# print(Portugal_df['province'].unique().size)
+# print(Chile_df['province'].unique().size)
+# print(Austria_df['province'].unique().size)
+
+# print(US_df['province'].unique())
+
+# print(Austria_df['province'].unique())
