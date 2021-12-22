@@ -14,6 +14,7 @@ import itertools
 data_path = 'data_output_csv/wineDataOutput.csv'
 wine_data = pd.read_csv(data_path, index_col='country')
 variety_data = pd.read_csv(data_path, index_col='variety')
+point_data = pd.read_csv('data_output_csv/pointDropped.csv',index_col='country')
 
 # Uncomment Plots you would like to show and comment those you do not 
 
@@ -28,51 +29,57 @@ variety_data = pd.read_csv(data_path, index_col='variety')
 # plt.xlabel('Countries')
 # plt.show()
 
+<<<<<<< HEAD
+=======
+# plt.figure(figsize=(10,6))
+# plt.ylim(80,95)
+# plt.title('Average Wine Score by Country')
+# sns.barplot(x = point_data.index, y = point_data['points'])
+# plt.ylabel('Average Score')
+# plt.xlabel('Countries')
+# plt.show()
+
+>>>>>>> build
 # plt.savefig('graphs/BarPlot.png') # Save our graph
 
 
 # ***************************************************************************************************************************
 #                                      Bar Plot for Average Score/Variety                                                   #
 # ***************************************************************************************************************************
-plt.figure(figsize=(10,6))
-plt.ylim(80,100)
-plt.title('Average Wine Score by Variety')
-variety_plot = sns.barplot(x=variety_data.index,y=variety_data['points'])
-plt.ylabel('Average Score')
-plt.xlabel('Varieties')
-variety_plot.set_xticklabels(variety_plot.get_xticklabels(), rotation=40, ha='right')
-plt.tight_layout
-plt.show()
+# plt.figure(figsize=(10,6))
+# plt.ylim(80,100)
+# plt.title('Average Wine Score by Variety')
+# variety_plot = sns.barplot(x=variety_data.index,y=variety_data['points'])
+# plt.ylabel('Average Score')
+# plt.xlabel('Varieties')
+# variety_plot.set_xticklabels(variety_plot.get_xticklabels(), rotation=40, ha='right')
+# plt.tight_layout
+# plt.show()
 
+# # predicted data
+# predicted_data = pd.read_csv('data_output_csv/xgbRegressorOutput.csv')
+# plt.figure(figsize=(10,6))
+# plt.ylim(80,100)
+# plt.title('Average Wine Score by Variety')
+# variety_plot = sns.barplot(x=predicted_data['variety'],y=predicted_data['points'])
+# plt.ylabel('Predicted')
+# plt.xlabel('Varieties')
+# variety_plot.set_xticklabels(variety_plot.get_xticklabels(), rotation=40, ha='right')
+# plt.tight_layout
+# plt.show()
 
 
 # ***************************************************************************************************************************
 #                                      Scatter Plot for Average Score/Country                                               #
 # ***************************************************************************************************************************
-plt.title('Scores by Country')
-sns.scatterplot(x=wine_data.index, y=wine_data['points'])
-plt.show()
+# plt.title('Scores by Country')
+# sns.scatterplot(x=wine_data.index, y=wine_data['points'])
+# plt.show()
 
 # plt.savefig('graphs/scatterPlot.png') 
 
 # Only US, France, Italy, and Australia have wines that have scored 100
 # Scores of 100 may not be of great significance as for 100 there are only 24 entries?
-
-# points_series = wine_data.points.value_counts().sort_index(ascending=False)
-# print(points_series)
-# 100       24
-# 99        50
-# 98       131
-# 97       365
-# 96       695
-# 95      1716
-# 94      3462
-# 93      6017
-# 92      9241
-# 91     10536
-# 90     15973
-
-# High scores are >5% of the dataset, there is no practicality in doubting their accuracy since they are the project's target
 
 # ***************************************************************************************************************************
 #                                      Heat Map for Average Score/Country                                                   #
@@ -130,8 +137,60 @@ plt.show()
 # sns.heatmap(data=heatmap_data, annot=True)
 # plt.xlabel('Countries')
 # plt.show()
-    
 
+# ***************************************************************************************************************************
+#                                            Displot for Score Volume                                                       #
+# ***************************************************************************************************************************
+# displotData = pd.read_csv(data_path)
+# sns.displot(data=displotData,x='points',kind='kde')
+# plt.show()
+
+# ***************************************************************************************************************************
+#                                                   Price/Score Plots                                                       #
+# ***************************************************************************************************************************
+# displotData = pd.read_csv(data_path)
+# sns.displot(data=displotData,x='points',kind='kde')
+# plt.show()
+
+# hexData=pd.read_csv(data_path)
+# hexData[hexData['price'] < 100].plot.hexbin(x='price', y='points', gridsize=15)
+# plt.ylabel('Points')
+# plt.xlabel('Price')
+# plt.show()
+
+# ***************************************************************************************************************************
+#                                                  Predicted Variety Scores                                                 #
+# ***************************************************************************************************************************
+predicted_data = pd.read_csv('data_output_csv/xgbRegressorOutput.csv')
+
+# Varieties & average predicted scores
+varieties = {'Cabernet Sauvignon': 87.96, 'Other': 87.95, 'Sauvignon Blanc': 87.92,
+             'Pinot Noir': 88.0, 'Chardonnay': 87.93, 'Syrah': 87.88, 'Red Blend': 87.91,
+             'Riesling': 87.99, 'Zinfandel': 87.91, 'Bordeaux-style Red Blend': 87.96, 'Merlot': 87.98}
+
+# Create a dataframe with the top 10 varieties and their predicted scores
+df = pd.DataFrame(columns=['variety','predicted_score'])
+
+for variety, score in varieties.items():
+    new_row = {'variety':variety,'predicted_score':score} 
+    df = df.append(new_row, ignore_index=True)
+
+print(df)
+
+plt.figure(figsize=(10,6))
+plt.ylim(87.6,88.1)
+plt.title('Wine Varieties by Predicted Score')
+variety_plot = sns.barplot(x=df['variety'],y=df['predicted_score'],order=df.sort_values('predicted_score',ascending=False).variety)
+plt.ylabel('Predicted Score')
+plt.xlabel('Varieties')
+variety_plot.set_xticklabels(variety_plot.get_xticklabels(), rotation=40, ha='right')
+plt.tight_layout
+plt.show()
+
+# sns.barplot(x='Education', 
+#             y="Salary", 
+#             data=df, 
+#             order=df.sort_values('Salary',ascending = False).Education)
 
 
     
