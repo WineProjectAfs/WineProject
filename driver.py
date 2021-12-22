@@ -18,15 +18,14 @@ from collections import OrderedDict
 
 from data_manipulation.input_manipulation import *
 
-test = 'test'
 
 # Data Set-Up
 dataPath = 'source_csv/winemag_data.csv' 
 wineData = setUpData(dataPath)
 
-# Data Manipulation: Reduces Cardinality of 'Variety' and 'Countries' -> Outputs .csv and Returns New DataFrame
+# Data Manipulation: Removes Wines That Score <= 85 Points -> Reduces Cardinality of 'Variety' and 'Countries' -> Outputs .csv and Returns New DataFrame
 wineData = dataManipulation(wineData)
-wineData.to_csv('data_output_csv/wineDataOutput.csv')
+# wineData.to_csv('data_output_csv/wineDataOutput.csv')
 
 features = ['country', 'variety']
 y = predictedFeature(wineData)
@@ -51,13 +50,13 @@ OH_cols_valid.index = X_valid.index
 
 # Uncomment All Between Lines  to Print .csv With Predictions For Random Forest Model #
 # Beginning ###############################################################################################################
-rf_model = RandomForestRegressor(random_state=0) 
-rf_model.fit(OH_cols_train, Y_train)
-rf_val_predictions = rf_model.predict(OH_cols_valid)
-rf_val_mae = mean_absolute_error(rf_val_predictions, Y_valid)
+# rf_model = RandomForestRegressor(random_state=0) 
+# rf_model.fit(OH_cols_train, Y_train)
+# rf_val_predictions = rf_model.predict(OH_cols_valid)
+# rf_val_mae = mean_absolute_error(rf_val_predictions, Y_valid)
 
-# Output CSV
-outputCSV(wineData, rf_val_predictions, "randomForestModelOutput", Y_valid)
+# # Output CSV
+# outputCSV(wineData, rf_val_predictions, "randomForestModelOutput", Y_valid)
 # End ######################################################################################################################
 
 # # Type Check
@@ -183,53 +182,56 @@ outputCSV(wineData, rf_val_predictions, "randomForestModelOutput", Y_valid)
 # ***************************************************************************************************************************
 #                                      Grabbing Top Wine & Province Recommendations                                         #
 # ***************************************************************************************************************************
-# # Grabbing Top Wines
-# # predicted data
-# predicted_data = pd.read_csv('data_output_csv/xgbRegressorOutput.csv')
+# Grabbing Top Wines
+# predicted data
+predicted_data = pd.read_csv('data_output_csv/xgbRegressorOutput.csv')
 
-# variety_avgs = {}
+variety_avgs = {}
 
-# for variety in predicted_data['variety'].unique():
-#     df = predicted_data[predicted_data['variety'] == variety]
-#     point_avg = df['0'].mean()
-#     variety_avgs.update({variety:round(point_avg,2)})
+# This loop grabs the average predicted score for our top 10 varieties and adds them to a dict
 
-# variety_rank = sorted(variety_avgs.items(), key=lambda x: x[1], reverse=True)
+for variety in predicted_data['variety'].unique():
+    df = predicted_data[predicted_data['variety'] == variety]
+    point_avg = df['0'].mean()
+    variety_avgs.update({variety:round(point_avg,2)})
 
-# # Vartieties & their predicted scores
-# # {'Cabernet Sauvignon': 87.96, 'Other': 87.95, 'Sauvignon Blanc': 87.92, 'Pinot Noir': 88.0, 'Chardonnay': 87.93, 'Syrah': 87.88,
-# #  'Red Blend': 87.91, 'Riesling': 87.99, 'Zinfandel': 87.91, 'Bordeaux-style Red Blend': 87.96, 'Merlot': 87.98}
+variety_rank = sorted(variety_avgs.items(), key=lambda x: x[1], reverse=True)
 
-# # Varieties ranked by score
-# print(variety_rank)
-# # [('Pinot Noir', 88.0), ('Riesling', 87.99), ('Merlot', 87.98), ('Cabernet Sauvignon', 87.96), ('Bordeaux-style Red Blend', 87.96),
-# #  ('Other', 87.95), ('Chardonnay', 87.93), ('Sauvignon Blanc', 87.92), ('Red Blend', 87.91), ('Zinfandel', 87.91), ('Syrah', 87.88)]
+# Vartieties & their predicted scores
+# {'Cabernet Sauvignon': 87.96, 'Other': 87.95, 'Sauvignon Blanc': 87.92, 'Pinot Noir': 88.0, 'Chardonnay': 87.93, 'Syrah': 87.88,
+#  'Red Blend': 87.91, 'Riesling': 87.99, 'Zinfandel': 87.91, 'Bordeaux-style Red Blend': 87.96, 'Merlot': 87.98}
 
-# # Pinot Noir & Riesling are the 2 top scoring wines
-# # ***************************************************************************************************************************
+# Varieties ranked by score
+print('Varieties Ranked by Score:')
+print(variety_rank)
+# [('Pinot Noir', 88.0), ('Riesling', 87.99), ('Merlot', 87.98), ('Cabernet Sauvignon', 87.96), ('Bordeaux-style Red Blend', 87.96),
+#  ('Other', 87.95), ('Chardonnay', 87.93), ('Sauvignon Blanc', 87.92), ('Red Blend', 87.91), ('Zinfandel', 87.91), ('Syrah', 87.88)]
 
-# # This function grabs and ranks the top scoring provinces to grow the given variety 
+# Pinot Noir & Riesling are the 2 top scoring wines
+# ***************************************************************************************************************************
 
-# def topProvinces(variety):
-#     predicted_data = pd.read_csv('data_output_csv/xgbRegressorOutput.csv')
-#     province_scores ={}
-#     variety_data = predicted_data[predicted_data['variety'] == variety]
-#     province_data = variety_data['province']
-#     province_series = province_data.value_counts(ascending=False)
-#     province_list = province_series.index.tolist()
-#     top_provinces = province_list[:10]
+# This function grabs and ranks the top scoring provinces to grow the given variety 
 
-#     for province in top_provinces:
-#         score = variety_data[variety_data.province == province]
-#         predicted_avg = score['0'].mean()
-#         province_scores.update({province:round(predicted_avg,2)})
+def topProvinces(variety):
+    predicted_data = pd.read_csv('data_output_csv/xgbRegressorOutput.csv')
+    province_scores ={}
+    variety_data = predicted_data[predicted_data['variety'] == variety]
+    province_data = variety_data['province']
+    province_series = province_data.value_counts(ascending=False)
+    province_list = province_series.index.tolist()
+    top_provinces = province_list[:10]
 
-#     sorted_provinces = sorted(province_scores.items(), key=lambda x: x[1], reverse=True)
-#     print(sorted_provinces)
+    for province in top_provinces:
+        score = variety_data[variety_data.province == province]
+        predicted_avg = score['0'].mean()
+        province_scores.update({province:round(predicted_avg,2)})
 
-# print('Pinot Noir - Top Provinces:')
-# print(topProvinces('Pinot Noir'))
-# print('Bordeaux-style Red Blend - Top Provinces:')
-# print(topProvinces('Bordeaux-style Red Blend'))
+    sorted_provinces = sorted(province_scores.items(), key=lambda x: x[1], reverse=True)
+    print(sorted_provinces)
+
+print('Pinot Noir - Top Provinces:')
+print(topProvinces('Pinot Noir'))
+print('Riesling - Top Provinces:')
+print(topProvinces('Riesling'))
 
 
