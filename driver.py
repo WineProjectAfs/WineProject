@@ -25,7 +25,7 @@ wineData = setUpData(dataPath)
 
 # Data Manipulation: Removes Wines That Score <= 85 Points -> Reduces Cardinality of 'Variety' and 'Countries' -> Outputs .csv and Returns New DataFrame
 wineData = dataManipulation(wineData)
-# wineData.to_csv('data_output_csv/wineDataOutputTest.csv')
+wineData.to_csv('data_output_csv/wineDataOutput.csv')
 
 features = ['country', 'variety']
 y = predictedFeature(wineData)
@@ -50,13 +50,13 @@ OH_cols_valid.index = X_valid.index
 
 # Uncomment All Between Lines  to Print .csv With Predictions For Random Forest Model #
 # Beginning ###############################################################################################################
-# rf_model = RandomForestRegressor(random_state=0) 
-# rf_model.fit(OH_cols_train, Y_train)
-# rf_val_predictions = rf_model.predict(OH_cols_valid)
-# rf_val_mae = mean_absolute_error(rf_val_predictions, Y_valid)
+rf_model = RandomForestRegressor(random_state=0) 
+rf_model.fit(OH_cols_train, Y_train)
+rf_val_predictions = rf_model.predict(OH_cols_valid)
+rf_val_mae = mean_absolute_error(rf_val_predictions, Y_valid)
 
-# # Output CSV
-# outputCSV(wineData, rf_val_predictions, "randomForestModelOutput", Y_valid)
+# Output CSV
+outputCSV(wineData, rf_val_predictions, "randomForestModelOutput", Y_valid)
 # End ######################################################################################################################
 
 # # Type Check
@@ -115,7 +115,7 @@ OH_cols_valid.index = X_valid.index
 # xgb_mae = mean_absolute_error(xgbPredictions, Y_valid)
 
 # # Output CSV
-# outputCSV(wineData, xgbPredictions, "xgbRegressorOutput2", Y_valid)
+# outputCSV(wineData, xgbPredictions, "xgbRegressorOutput", Y_valid)
 # End ######################################################################################################################
 
 # test = pd.read_csv('data_output_csv/wineDataOutPut.csv')
@@ -137,109 +137,98 @@ OH_cols_valid.index = X_valid.index
 # print(xgbDF['points'].mean()) # 87.957 average score
 # ***************************************************************************************************************************
 
-# Testing out dropping entries with < 85 points
+# ***************************************************************************************************************************
+#                                        Evaluating dropping < 85 point entries                                             #
+# ***************************************************************************************************************************
+# # Testing out dropping entries with < 85 points
+# # dataset with predictions
+# predicted_data = pd.read_csv('data_output_csv/xgbRegressorOutput.csv')
 
-# allpoints = {}
-# droppedpoints = {}
-# point_data = pd.read_csv('data_output_csv/pointDropped.csv')
+# # predicted points average
+# predicted_points = {}
+
+# # actual points average
+# all_points = {}
+
+# for country in predicted_data['country'].unique():
+#     df = predicted_data[predicted_data.country == country]
+#     point_avg = df['0'].mean()
+#     predicted_points.update({country:round(point_avg,2)})
 
 # for country in wineData['country'].unique():
-#     str = f'{country}_df'
-#     locals()[str] = wineData[wineData.country == country]
-#     point_avg = locals()[str]['points'].mean()
-#     allpoints.update({str:round(point_avg,2)})
+#     df = wineData[wineData.country == country]
+#     point_avg = df['points'].mean()
+#     all_points.update({country:round(point_avg,2)})
 
-# for country in point_data['country'].unique():
-#     str = f'{country}_df'
-#     locals()[str] = point_data[point_data.country == country]
-#     point_avg = locals()[str]['points'].mean()
-#     droppedpoints.update({str:round(point_avg,2)})
+# # # sort actual and predicted points dictionaries
+# # all_points = sorted(all_points.items(), key=lambda x: x[1], reverse=True)
+# # predicted_points = sorted(predicted_points.items(), key=lambda x: x[1], reverse=True)
 
-# print(allpoints)
-# print(droppedpoints)
+# print(all_points)
+# print(predicted_points)
 
-# output = pd.read_csv('data_output_csv/xgbRegressorOutput.csv')
-# output2 = pd.read_csv('data_output_csv/xgbRegressorOutput2.csv')
-# print(output['0'].mean())
-# print(output2['0'].mean())
 
-# This loop generates a dataframe for each unique country then stores those dataframes in a list
-country_list = []
+# # Average actual score by country
+# # {'US': 87.91, 'Spain': 86.76, 'France': 88.92, 'Italy': 88.39, 'New Zealand': 87.64,
+# #  'Other': 87.56, 'Argentina': 86.08, 'Australia': 87.96, 'Portugal': 88.12, 'Chile': 86.28, 'Austria': 89.38}
 
-for country in wineData['country'].unique():
-    country_list.append(f'{country}_df')
+# # Average predicted score by country
+# # {'US': 87.96, 'Spain': 87.96, 'France': 87.93, 'Italy': 87.94, 'New Zealand': 88.07,
+# #  'Other': 87.98, 'Argentina': 87.96, 'Australia': 87.98, 'Portugal': 87.91, 'Chile': 87.93, 'Austria': 87.99}
 
-def countryFrame(country):
-    globals()[str] = wineData[wineData.country == country]
-    country_list.append(globals()[str])
+# # Dropping < 85 scores skews the data towards countries with more reviews and against countries with less
+# ***************************************************************************************************************************
 
-for country in wineData['country'].unique():
-    countryFrame(country)
+# ***************************************************************************************************************************
+#                                      Grabbing Top Wine & Province Recommendations                                         #
+# ***************************************************************************************************************************
+# # Grabbing Top Wines
+# # predicted data
+# predicted_data = pd.read_csv('data_output_csv/xgbRegressorOutput.csv')
 
-US_df = wineData[wineData.country == 'US']
-Spain_df = wineData[wineData.country == 'Spain']
-France_df = wineData[wineData.country == 'France']
-Italy_df = wineData[wineData.country == 'Italy']
-New_Zealand_df = wineData[wineData.country == 'New Zealand']
-Other_df = wineData[wineData.country == 'Other']
-Argentina_df = wineData[wineData.country == 'Argentina']
-Australia_df = wineData[wineData.country == 'Australia']
-Portugal_df = wineData[wineData.country == 'Portugal']
-Chile_df = wineData[wineData.country == 'Chile']
-Austria_df = wineData[wineData.country == 'Austria']
-countries_list = [US_df,Spain_df,France_df,Italy_df,New_Zealand_df,Other_df,
-                  Argentina_df,Australia_df,Portugal_df]
+# variety_avgs = {}
 
-# print(country_list)
-# print(US_df)
-# print(France_df)
+# for variety in predicted_data['variety'].unique():
+#     df = predicted_data[predicted_data['variety'] == variety]
+#     point_avg = df['0'].mean()
+#     variety_avgs.update({variety:round(point_avg,2)})
 
-allpoints = {}
+# variety_rank = sorted(variety_avgs.items(), key=lambda x: x[1], reverse=True)
 
-for country in wineData['country'].unique():
-    str = f'{country}_df'
-    locals()[str] = wineData[wineData.country == country]
-    point_avg = locals()[str]['points'].mean()
-    allpoints.update({str:round(point_avg,2)})
+# # Vartieties & their predicted scores
+# # {'Cabernet Sauvignon': 87.96, 'Other': 87.95, 'Sauvignon Blanc': 87.92, 'Pinot Noir': 88.0, 'Chardonnay': 87.93, 'Syrah': 87.88,
+# #  'Red Blend': 87.91, 'Riesling': 87.99, 'Zinfandel': 87.91, 'Bordeaux-style Red Blend': 87.96, 'Merlot': 87.98}
 
-print(sorted(allpoints.items(), key=lambda x: x[1], reverse=True))
+# # Varieties ranked by score
+# print(variety_rank)
+# # [('Pinot Noir', 88.0), ('Riesling', 87.99), ('Merlot', 87.98), ('Cabernet Sauvignon', 87.96), ('Bordeaux-style Red Blend', 87.96),
+# #  ('Other', 87.95), ('Chardonnay', 87.93), ('Sauvignon Blanc', 87.92), ('Red Blend', 87.91), ('Zinfandel', 87.91), ('Syrah', 87.88)]
 
-# sorted_keys = sorted(dict1, key=dict1.get)  # [1, 3, 2]
+# # Pinot Noir & Riesling are the 2 top scoring wines
+# # ***************************************************************************************************************************
 
-# for w in sorted_keys:
-#     sorted_dict[w] = dict1[w]
+# # This function grabs and ranks the top scoring provinces to grow the given variety 
 
-# print(output['0'].mean())
-# print(allpoints)
-# Average predicted score by country
-# {'US_df': 87.91, 'Spain_df': 86.76, 'France_df': 88.92, 'Italy_df': 88.39,
-#  'New Zealand_df': 87.64, 'Other_df': 87.56, 'Argentina_df': 86.08,
-#  'Australia_df': 87.96, 'Portugal_df': 88.12, 'Chile_df': 86.28, 'Austria_df': 89.38}
+# def topProvinces(variety):
+#     predicted_data = pd.read_csv('data_output_csv/xgbRegressorOutput.csv')
+#     province_scores ={}
+#     variety_data = predicted_data[predicted_data['variety'] == variety]
+#     province_data = variety_data['province']
+#     province_series = province_data.value_counts(ascending=False)
+#     province_list = province_series.index.tolist()
+#     top_provinces = province_list[:10]
 
-# print(US_df['province'].unique().size)
-# print(Spain_df['province'].unique().size)
-# print(France_df['province'].unique().size)
-# print(Italy_df['province'].unique().size)
-# print(New_Zealand_df['province'].unique().size)
-# print(Other_df['province'].unique().size)
-# print(Argentina_df['province'].unique().size)
-# print(Australia_df['province'].unique().size)
-# print(Portugal_df['province'].unique().size)
-# print(Chile_df['province'].unique().size)
-# print(Austria_df['province'].unique().size)
+#     for province in top_provinces:
+#         score = variety_data[variety_data.province == province]
+#         predicted_avg = score['0'].mean()
+#         province_scores.update({province:round(predicted_avg,2)})
 
-# print(US_df['province'].unique().size)
-# print(Spain_df['province'].unique().size)
-# print(France_df['province'].unique().size)
-# print(Italy_df['province'].unique().size)
-# print(New_Zealand_df['province'].unique().size)
-# print(Other_df['province'].unique().size)
-# print(Argentina_df['province'].unique().size)
-# print(Australia_df['province'].unique().size)
-# print(Portugal_df['province'].unique().size)
-# print(Chile_df['province'].unique().size)
-# print(Austria_df['province'].unique().size)
+#     sorted_provinces = sorted(province_scores.items(), key=lambda x: x[1], reverse=True)
+#     print(sorted_provinces)
 
-# print(US_df['province'].unique())
+# print('Pinot Noir - Top Provinces:')
+# print(topProvinces('Pinot Noir'))
+# print('Bordeaux-style Red Blend - Top Provinces:')
+# print(topProvinces('Bordeaux-style Red Blend'))
 
-# print(Austria_df['province'].unique())
+
